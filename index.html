@@ -7,14 +7,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* INSTRUCCIONES DE EDICIÓN:
-           
-           1. CAMBIAR NOMBRE: Edita el texto entre <a> y </a>.
-           2. CAMBIAR ENLACE: Cambia href="#" por tu URL.
-           3. TAMAÑOS DE TEXTO:
-              - Para el texto de IA: Busca la clase '.ia-badge span'. Actualmente en 1rem (16px).
-              - Para la materia: Busca la clase '.materia-badge'. Actualmente en 0.875rem (14px).
-        */
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: #0f172a;
@@ -59,12 +51,13 @@
         .color-3 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
         .color-4 { background: linear-gradient(135deg, #10b981, #3b82f6); }
         .color-5 { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+        .color-6 { background: linear-gradient(135deg, #64748b, #475569); }
 
         .main-container {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -81,7 +74,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Estilo para el aviso de IA */
         .ia-badge {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -93,12 +85,8 @@
             color: #94a3b8;
         }
         
-        /* AQUÍ CAMBIAS EL TAMAÑO DEL TEXTO DE IA */
-        .ia-badge span {
-            font-size: 1rem; /* Subido de 0.85rem a 1rem */
-        }
+        .ia-badge span { font-size: 1rem; }
 
-        /* Estilo para el nombre de la materia */
         .materia-badge {
             background: rgba(59, 130, 246, 0.1);
             color: #93c5fd;
@@ -108,17 +96,73 @@
             border: 1px solid rgba(59, 130, 246, 0.2);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            /* AQUÍ CAMBIAS EL TAMAÑO DE LA MATERIA */
-            font-size: 0.875rem; /* Subido de 10px a 14px aprox */
+            font-size: 0.875rem;
             line-height: 1.25rem;
+        }
+
+        /* --- NUEVO ESTILO DE SEPARADOR / NAVEGACIÓN --- */
+        .segmented-control {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 18px;
+            display: inline-flex;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .segmented-control button {
+            padding: 10px 30px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s ease;
+            color: #94a3b8;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        .segmented-control button.active {
+            color: #ffffff;
+        }
+
+        .active-indicator {
+            position: absolute;
+            height: calc(100% - 12px);
+            top: 6px;
+            left: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-radius: 14px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+            z-index: 0;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .content-section.active {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <div class="max-w-7xl mx-auto">
-        <!-- Encabezado (Cuadro principal) -->
-        <header class="glass-card p-8 mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div class="max-w-6xl mx-auto">
+        <!-- Encabezado -->
+        <header class="glass-card p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
                 <h1 class="text-3xl md:text-5xl font-extrabold header-gradient mb-2">Producciones de Sebas</h1>
                 <div class="ia-badge mt-2">
@@ -136,52 +180,101 @@
             </div>
         </header>
 
-        <!-- Directorio de Botones -->
+        <!-- Navegación Estilo Separador (Segmented Control) -->
+        <div class="flex justify-center mb-12">
+            <div class="segmented-control">
+                <div id="indicator" class="active-indicator"></div>
+                <button onclick="showTab('principales', this)" id="tab-principales" class="active">
+                    Principales
+                </button>
+                <button onclick="showTab('varios', this)" id="tab-varios">
+                    Proyectos Varios
+                </button>
+            </div>
+        </div>
+
+        <!-- Contenedor de Proyectos -->
         <main class="main-container">
             
-            <div class="btn-row">
-                <a href="https://juego-memoria-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
-                    Juego Memoria
-                </a>
-                <a href="#" target="_blank" class="btn-directory color-1 text-xl">
-                    Juego Memoria v2 (en proceso)
-                </a>
+            <!-- SECCIÓN: PROYECTOS PRINCIPALES -->
+            <div id="principales" class="content-section active">
+                <div class="btn-row">
+                    <a href="https://juego-memoria-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
+                        Juego Memoria
+                    </a>
+                    <a href="#" target="_blank" class="btn-directory color-1 text-xl">
+                        Juego Memoria v2
+                    </a>
+                </div>
+
+                <div class="btn-row">
+                    <a href="https://juego-patrones-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
+                        Juego Patrones
+                    </a>
+                    <a href="#" target="_blank" class="btn-directory color-2 text-xl">
+                        Juego Patrones v2
+                    </a>
+                </div>
+
+                <div class="btn-row">
+                    <a href="#" target="_blank" class="btn-directory color-3 text-2xl">
+                        Botón 3
+                    </a>
+                </div>
             </div>
 
-            <div class="btn-row">
-                <a href="https://juego-patrones-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-                    Juego Patrones
-                </a>
-                <a href="#" target="_blank" class="btn-directory color-2 text-xl">
-                    Juego Patrones v2 (en proceso)
-                </a>
-            </div>
-
-            <div class="btn-row">
-                <a href="#" target="_blank" class="btn-directory color-3 text-2xl">
-                    Juego 3 (proximanente..)
-                </a>
-            </div>
-
-            <div class="btn-row">
-                <a href="#" target="_blank" class="btn-directory color-4 text-xl">
-                    Juego 4 (proximanente..)
-                </a>
-            </div>
-
-            <div class="btn-row">
-                <a href="#" target="_blank" class="btn-directory color-5 text-xl">
-                    Juego 5 (proximanente..)
-                </a>
+            <!-- SECCIÓN: PROYECTOS VARIOS -->
+            <div id="varios" class="content-section">
+                <div class="btn-row">
+                    <a href="#" target="_blank" class="btn-directory color-6 text-xl">
+                        Recurso Secundario A
+                    </a>
+                    <a href="#" target="_blank" class="btn-directory color-6 text-xl">
+                        Recurso Secundario B
+                    </a>
+                </div>
+                <div class="btn-row">
+                    <a href="#" target="_blank" class="btn-directory color-4 text-xl">
+                        Material de Apoyo
+                    </a>
+                </div>
             </div>
 
         </main>
 
         <footer class="mt-20 text-center text-slate-500 text-sm pb-8">
-            <p class="mb-2 italic">Directorio de recursos didácticos digitales</p>
+            <p class="mb-2 italic">Diseño desarrollado para entornos de aprendizaje</p>
             &copy; 2024 - Producciones de Sebas
         </footer>
     </div>
+
+    <script>
+        // Inicializar el ancho del indicador al cargar
+        window.onload = function() {
+            const activeBtn = document.querySelector('.segmented-control button.active');
+            const indicator = document.getElementById('indicator');
+            indicator.style.width = activeBtn.offsetWidth + 'px';
+        };
+
+        function showTab(tabId, btnElement) {
+            // Animación del indicador
+            const indicator = document.getElementById('indicator');
+            indicator.style.transform = `translateX(${btnElement.offsetLeft - 6}px)`;
+            indicator.style.width = btnElement.offsetWidth + 'px';
+
+            // Cambiar clases de los botones
+            document.querySelectorAll('.segmented-control button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            btnElement.classList.add('active');
+
+            // Mostrar/Ocultar secciones
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+        }
+    </script>
 
 </body>
 </html>
