@@ -1,567 +1,295 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Producciones de Sebas - Directorio</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-
     <style>
-
         body {
-
             font-family: 'Plus Jakarta Sans', sans-serif;
-
             background: #0f172a;
-
             background: radial-gradient(circle at top right, #1e293b, #0f172a);
-
             color: #f8fafc;
-
             min-height: 100vh;
-
         }
-
-
 
         .glass-card {
-
             background: rgba(255, 255, 255, 0.03);
-
             backdrop-filter: blur(10px);
-
             border: 1px solid rgba(255, 255, 255, 0.1);
-
             border-radius: 24px;
-
         }
-
-
 
         .btn-directory {
-
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
             position: relative;
-
             overflow: hidden;
-
             display: flex;
-
             align-items: center;
-
             justify-content: center;
-
             text-align: center;
-
             padding: 1.5rem;
-
             border-radius: 20px;
-
             font-weight: 600;
-
             text-decoration: none;
-
             color: white;
-
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-
             min-height: 100px;
-
             width: 100%;
-
         }
-
 
 
         .btn-directory:hover {
-
             transform: translateY(-5px) scale(1.02);
-
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-
             filter: brightness(1.2);
-
         }
-
-
 
         .color-1 { background: linear-gradient(135deg, #6366f1, #a855f7); }
-
         .color-2 { background: linear-gradient(135deg, #3b82f6, #2dd4bf); }
-
         .color-3 { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-
         .color-4 { background: linear-gradient(135deg, #10b981, #3b82f6); }
-
         .color-5 { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
-
         .color-6 { background: linear-gradient(135deg, #64748b, #475569); }
 
-
-
         .main-container {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 1.5rem;
-
             max-width: 1200px;
-
             margin: 0 auto;
-
         }
-
-
 
         .btn-row {
-
             display: grid;
-
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-
             gap: 1.25rem;
-
             width: 100%;
-
         }
-
-
 
         .header-gradient {
-
             background: linear-gradient(to right, #fff, #94a3b8);
-
             -webkit-background-clip: text;
-
             -webkit-text-fill-color: transparent;
-
         }
-
-
 
         .ia-badge {
-
             background: rgba(255, 255, 255, 0.05);
-
             border: 1px solid rgba(255, 255, 255, 0.1);
-
             padding: 0.75rem 1.25rem;
-
             border-radius: 15px;
-
             display: inline-flex;
-
             align-items: center;
-
             gap: 12px;
-
             color: #94a3b8;
-
         }
 
-        
-
+    
         .ia-badge span { font-size: 1rem; }
 
-
-
         .materia-badge {
-
             background: rgba(59, 130, 246, 0.1);
-
             color: #93c5fd;
-
             padding: 0.5rem 1rem;
-
             border-radius: 9999px;
-
             display: inline-block;
-
             border: 1px solid rgba(59, 130, 246, 0.2);
-
             text-transform: uppercase;
-
             letter-spacing: 0.05em;
-
             font-size: 0.875rem;
-
             line-height: 1.25rem;
-
         }
-
 
 
         /* --- NUEVO ESTILO DE SEPARADOR / NAVEGACIÓN --- */
-
         .segmented-control {
-
             background: rgba(255, 255, 255, 0.05);
-
             padding: 6px;
-
             border-radius: 18px;
-
             display: inline-flex;
-
             position: relative;
-
             border: 1px solid rgba(255, 255, 255, 0.08);
-
         }
-
 
 
         .segmented-control button {
-
             padding: 10px 30px;
-
             border-radius: 14px;
-
             font-weight: 700;
-
             font-size: 0.95rem;
-
             position: relative;
-
             z-index: 1;
-
             transition: color 0.3s ease;
-
             color: #94a3b8;
-
             cursor: pointer;
-
             border: none;
-
             outline: none;
-
             background: transparent;
-
         }
-
-
 
         .segmented-control button.active {
-
             color: #ffffff;
-
         }
-
-
 
         .active-indicator {
-
             position: absolute;
-
             height: calc(100% - 12px);
-
             top: 6px;
-
             left: 6px;
-
             background: rgba(255, 255, 255, 0.12);
-
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-
             border-radius: 14px;
-
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
-
             z-index: 0;
-
         }
-
 
 
         .content-section {
-
             display: none;
-
             animation: fadeIn 0.5s ease forwards;
-
         }
-
-
 
         .content-section.active {
-
             display: flex;
-
             flex-direction: column;
-
             gap: 1.5rem;
-
         }
-
-
 
         @keyframes fadeIn {
-
             from { opacity: 0; transform: translateY(15px); }
-
             to { opacity: 1; transform: translateY(0); }
-
         }
-
     </style>
-
 </head>
-
 <body class="p-4 md:p-8">
 
 
-
     <div class="max-w-7xl mx-auto">
-
         <!-- Encabezado -->
-
         <header class="glass-card p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-
             <div>
-
                 <h1 class="text-3xl md:text-5xl font-extrabold header-gradient mb-2">Producciones de Sebas</h1>
-
                 <div class="ia-badge mt-2">
-
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12L2.1 12.1"/><path d="M12 12a10 10 0 1 1 10 10V12H12z"/></svg>
-
                     <span>Todo esto fue hecho 100% con IA</span>
-
                 </div>
-
             </div>
-
-            
 
             <div class="text-left border-l-2 border-blue-500/30 pl-6">
-
                 <p class="text-xl font-semibold text-white">Juan Sebastian Olivera</p>
-
                 <p class="text-slate-400 text-base mb-3">Juanlg1491@gmail.com</p>
-
                 <div class="materia-badge">
-
                     Taller de diseño y construcción de recursos didácticos
-
                 </div>
-
             </div>
-
         </header>
 
 
-
         <!-- Navegación Estilo Separador (Segmented Control) -->
-
         <div class="flex justify-center mb-12">
-
             <div class="segmented-control">
-
                 <div id="indicator" class="active-indicator"></div>
-
                 <button onclick="showTab('principales', this)" id="tab-principales" class="active">
-
                     Proyectos Principales
-
                 </button>
-
                 <button onclick="showTab('varios', this)" id="tab-varios">
-
                     Otros Varios..
-
                 </button>
-
             </div>
-
         </div>
 
-
-
         <!-- Contenedor de Proyectos -->
-
         <main class="main-container">
-
             
-
             <!-- SECCIÓN: PROYECTOS PRINCIPALES -->
-
             <div id="principales" class="content-section active">
-
                 <div class="btn-row">
-
                     <a href="https://juego-memoria-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
-
                         Juego Memoria
-
                     </a>
-
                     <a href="https://juego-memoria-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
-
                         Juego Memoria v2 (Final)
-
                     </a>
-
                 </div>
 
-
-
                 <div class="btn-row">
-
                     <a href="https://juego-patrones-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-
                         Juego Patrones
-
                     </a>
-
                     <a href="https://juego-patrones-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-
                         Juego Patrones v2
-
                     </a>
-
                     <a href="https://juego-patrones-v3-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-
                         Juego Patrones v3 (final)
-
                     </a>
-
                 </div>
 
-
-
                 <div class="btn-row">
-
                     <a href="#" target="_blank" class="btn-directory color-3 text-2xl">
-
                         Juego 4 (proximanente..)
-
                     </a>
-
                 </div>
 
-                
-
                 <div class="btn-row">
-
                     <a href="#" target="_blank" class="btn-directory color-1 text-2xl">
-
                         Juego 5 (proximanente..)
-
                     </a>
-
                 </div>
-
                 
-
                 <div class="btn-row">
-
                     <a href="#" target="_blank" class="btn-directory color-2 text-2xl">
-
                         Juego 6 (proximanente..)
-
                     </a>
-
                 </div>
-
             </div>
-
-
 
             <!-- SECCIÓN: PROYECTOS VARIOS -->
-
             <div id="varios" class="content-section">
-
                 <div class="btn-row">
-
                     <a href="https://sebas1491.github.io/libreria-progra/" target="_blank" class="btn-directory color-6 text-xl">
-
                         Biblioteca de Programacion
-
                     </a>
-
                     <a href="#" target="_blank" class="btn-directory color-6 text-xl">
-
                        Proyecto b (proximamente..)
-
                     </a>
-
                 </div>
-
                 <div class="btn-row">
-
                     <a href="#" target="_blank" class="btn-directory color-4 text-xl">
-
                         Proyecto c (proximamente..)
-
                     </a>
-
                 </div>
-
             </div>
-
-
 
         </main>
 
-
-
         <footer class="mt-20 text-center text-slate-500 text-sm pb-8">
-
             <p class="mb-2 italic">Diseño desarrollado para entornos de aprendizaje</p>
-
             &copy; 2024 - Producciones de Sebas
-
         </footer>
-
     </div>
 
-
-
+    
     <script>
-
         // Inicializar el ancho del indicador al cargar
-
         window.onload = function() {
-
             const activeBtn = document.querySelector('.segmented-control button.active');
-
             const indicator = document.getElementById('indicator');
-
             indicator.style.width = activeBtn.offsetWidth + 'px';
-
         };
 
-
-
         function showTab(tabId, btnElement) {
-
             // Animación del indicador
-
             const indicator = document.getElementById('indicator');
-
             indicator.style.transform = `translateX(${btnElement.offsetLeft - 6}px)`;
-
             indicator.style.width = btnElement.offsetWidth + 'px';
-
-
 
             // Cambiar clases de los botones
             document.querySelectorAll('.segmented-control button').forEach(btn => {
                 btn.classList.remove('active');
             });
             btnElement.classList.add('active');
-
 
             // Mostrar/Ocultar secciones
             document.querySelectorAll('.content-section').forEach(section => {
@@ -571,8 +299,5 @@
         }
     </script>
 
-
-
 </body>
-
 </html>
