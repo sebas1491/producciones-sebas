@@ -50,10 +50,10 @@
             50% { opacity: 0; }
         }
 
-        /* --- CARTEL MUCHO MÁS TRANSPARENTE --- */
+        /* --- CARTEL TRANSPARENTE --- */
         .glass-card {
-            background: rgba(15, 23, 42, 0.15); /* Reducido de 0.25 a 0.15 para mayor transparencia */
-            backdrop-filter: blur(8px); /* Reducido un poco para que sea más cristalino */
+            background: rgba(15, 23, 42, 0.15);
+            backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 24px;
         }
@@ -65,30 +65,56 @@
             overflow: hidden;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
+            justify-content: flex-start;
+            text-align: left;
             padding: 1.5rem;
             border-radius: 20px;
-            font-weight: 700;
             text-decoration: none;
             color: white;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            min-height: 100px;
+            min-height: 120px;
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .btn-directory:hover {
-            transform: translateY(-5px) scale(1.03);
+            transform: translateY(-5px) scale(1.02);
             box-shadow: 0 12px 30px rgba(0,0,0,0.5);
             filter: brightness(1.2);
             border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            padding-right: 80px; 
+            line-height: 1.4;
+        }
+
+        /* --- ETIQUETA MÁS GRANDE Y NO CENTRADA --- */
+        .inner-label {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem; /* Aumentado */
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.9); /* Más visible */
+            background: rgba(0, 0, 0, 0.5); /* Fondo más oscuro para contraste */
+            padding: 8px 20px; /* Más padding */
+            border-top-left-radius: 16px;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            backdrop-filter: blur(4px);
         }
 
         .color-1 { background: linear-gradient(135deg, #065f46, #064e3b); }
         .color-2 { background: linear-gradient(135deg, #1e40af, #1e3a8a); }
         .color-3 { background: linear-gradient(135deg, #334155, #1e293b); }
         .color-6 { background: linear-gradient(135deg, #0f172a, #020617); }
+        .color-gpt { background: linear-gradient(135deg, #10a37f, #0d8a6a); }
 
         .main-container {
             display: flex;
@@ -100,7 +126,7 @@
 
         .btn-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.25rem;
             width: 100%;
         }
@@ -187,14 +213,13 @@
     <div class="bg-fixed-overlay"></div>
 
     <div class="max-w-7xl mx-auto">
-        <!-- Encabezado con transparencia aumentada -->
+        <!-- Encabezado -->
         <header class="glass-card p-8 mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div>
                 <h1 class="text-3xl md:text-5xl font-extrabold mb-2 tech-title">
                     &lt;Producciones_de_Sebas&gt;
                 </h1>
                 <div class="ia-badge mt-2">
-                    <!-- LOGO IA: Icono de Robot SVG -->
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="10" rx="2"></rect>
                         <circle cx="12" cy="5" r="2"></circle>
@@ -232,38 +257,69 @@
         <main class="main-container">
             
             <div id="principales" class="content-section active">
+                <!-- Fila Memoria -->
                 <div class="btn-row">
-                    <a href="https://juego-memoria-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
-                        Juego Memoria
+                    <a href="https://juego-memoria-sebas.netlify.app/" target="_blank" class="btn-directory color-1">
+                        <span class="btn-title">Juego Memoria</span>
+                        <div class="inner-label">Gemini</div>
                     </a>
-                    <a href="https://juego-memoria-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-1 text-xl">
-                        Juego Memoria v2 (Final)
+                    <a href="https://juego-memoria-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-1">
+                        <span class="btn-title">Juego Memoria v2</span>
+                        <div class="inner-label">Gemini</div>
+                    </a>
+                    <a href="https://juego-memoria-gpt-sebas.netlify.app/" target="_blank" class="btn-directory color-1">
+                        <span class="btn-title">Juego Memoria</span>
+                        <div class="inner-label">ChatGPT</div>
                     </a>
                 </div>
 
+                <!-- Fila Patrones -->
                 <div class="btn-row">
-                    <a href="https://juego-patrones-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-                        Juego Patrones
+                    <a href="https://juego-patrones-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones</span>
+                        <div class="inner-label">Gemini</div>
                     </a>
-                    <a href="https://juego-patrones-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-                        Juego Patrones v2
+                    <a href="https://juego-patrones-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones v2</span>
+                        <div class="inner-label">Gemini</div>
                     </a>
-                    <a href="https://juego-patrones-v3-sebas.netlify.app/" target="_blank" class="btn-directory color-2 text-xl">
-                        Juego Patrones v3 (final)
+                    <a href="https://juego-patrones-v3-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones v3 (Final)</span>
+                        <div class="inner-label">Gemini</div>
+                    </a>
+                    <a href="https://juego-patrones-gpt-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones </span>
+                        <div class="inner-label">ChatGPT</div>
+                    </a>
+                    <a href="https://juego-patrones-gpt-v2-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones v2</span>
+                        <div class="inner-label">ChatGPT</div>
+                    </a>
+                    <a href="https://juego-patrones-gpt-v3-sebas.netlify.app/" target="_blank" class="btn-directory color-2">
+                        <span class="btn-title">Juego Patrones v3 (Final)</span>
+                        <div class="inner-label">ChatGPT</div>
                     </a>
                 </div>
 
-                <div class="btn-row">
-                    <a href="#" class="btn-directory color-3 text-2xl opacity-60">
-                        Juego 4 (próximamente)
+                <div class="btn-row opacity-60">
+                    <a href="#" class="btn-directory color-3">
+                        <span class="btn-title">Juego 4 (próximamente)</span>
                     </a>
                 </div>
+
+                <div class="btn-row opacity-60">
+                    <a href="#" class="btn-directory color-1">
+                        <span class="btn-title">Juego 5 (próximamente)</span>
+                    </a>
+                </div>
+
             </div>
 
             <div id="varios" class="content-section">
                 <div class="btn-row">
-                    <a href="https://sebas1491.github.io/libreria-progra/" target="_blank" class="btn-directory color-6 text-xl">
-                        Biblioteca de Programación
+                    <a href="https://sebas1491.github.io/libreria-progra/" target="_blank" class="btn-directory color-6">
+                        <span class="btn-title">Biblioteca de Programación</span>
+                        <div class="inner-label">Gemini</div>
                     </a>
                 </div>
             </div>
