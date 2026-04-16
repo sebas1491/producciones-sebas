@@ -174,22 +174,74 @@
     </div>
 
     <script>
-        const guia = [
-            { id: "es", nombre: "Práctica de Entrada y Salida",
+const guia = [
+{
+id: "es",
+nombre: "Práctica de Entrada y Salida",
 ejercicios: [
-{ id: 1, t: "1) Hola mundo", d: "Imprime Hola Mundo.", c: 'frase = "Hola mundo"\n\ndef main():\n    print(frase)\n\nmain()' },
+{ id: 1, t: "1) Hola mundo", d: "Imprime Hola Mundo.", c: 'frase = "Hola mundo"\nprint(frase)' },
 
-{ id: 2, t: "2) ASPO", d: "Repite una frase 40 veces.", c: 'frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()' },
+{ id: 2, t: "2) ASPO", d: "Repite una frase 40 veces.", c: 'frase = "Alberto, ¿terminó la cuarentena?"\nfor i in range(40):\n    print(frase)' },
 
-{ id: 3, t: "3) Castigado", d: "Repite frase ingresada.", c: 'def repetir_n_veces_una_frase(frase, cantidad):\n    for n in range(cantidad):\n        print(frase)\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    cantidad = int(input("Ingrese una cantidad: "))\n    repetir_n_veces_una_frase(frase, cantidad)\n\nmain()' },
+{ id: 3, t: "3) Castigado", d: "Repite una frase ingresada.", c: 'frase = input("Frase: ")\ncantidad = int(input("Cantidad: "))\nfor i in range(cantidad):\n    print(frase)' },
 
-{ id: 4, t: "4) Saludar usuario", d: "Saluda con nombre y edad.", c: 'def saludar(nombre, edad):\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Nombre: ")\n    edad = int(input("Edad: "))\n    saludar(nombre, edad)\n\nmain()' },
+{ id: 4, t: "4) Saludar usuario", d: "Saludo personalizado.", c: 'nombre = input("Nombre: ")\nedad = int(input("Edad: "))\nprint(f"Hola {nombre}. Tu edad es {edad}.")' },
 
-{ id: 5, t: "5) Comentar nombre", d: "Muestra comentario y cantidad de letras.", c: 'def comentar(nombre):\n    print(f"{nombre}, ¡ese es un hermoso nombre!")\n    print(f"{nombre}, tu nombre tiene {len(nombre)} letras")\n\ndef main():\n    nombre = input("Nombre: ")\n    comentar(nombre)\n\nmain()' },
+{ id: 5, t: "5) Comentar nombre", d: "Comentario + longitud.", c: 'nombre = input("Nombre: ")\nprint(f"{nombre}, ¡ese es un hermoso nombre!")\nprint(f"{nombre}, tiene {len(nombre)} letras")' },
 
-{ id: 6, t: "6) Letra elegida", d: "Muestra letra en posición.", c: 'def mostrar(frase, pos):\n    print(frase[pos])\n\ndef main():\n    frase = input("Frase: ")\n    pos = int(input("Posición: "))\n    mostrar(frase, pos)\n\nmain()' }
+{ id: 6, t: "6) Letra elegida", d: "Muestra letra en posición.", c: 'frase = input("Frase: ")\npos = int(input("Posición: "))\nprint(frase[pos])' }
+]},
+
+{
+id: "repeticion",
+nombre: "Repetición y Alternativas condicionales",
+ejercicios: [
+{ id: 7, t: "7) Nombre corto/largo", d: "Clasifica nombre.", c: 'nombre = input("Nombre: ")\nif len(nombre) <= 5:\n    print("Nombre corto")\nelse:\n    print("Nombre largo")' },
+
+{ id: 8, t: "8) Contar 1 a 10", d: "Cuenta con for.", c: 'for i in range(1,11):\n    print(i)' },
+
+{ id: 9, t: "9) Eco", d: "Imprime ECO n veces.", c: 'n = int(input("Metros: "))\nfor i in range(1,n+1):\n    print(f"{i} ECO")' },
+
+{ id: 10, t: "10) Cuenta regresiva", d: "Cuenta atrás.", c: 'for i in range(10,0,-1):\n    print(i)' },
+
+{ id: 11, t: "11) Viajar al pasado", d: "Simula viaje en años.", c: 'actual = 2026\npasado = int(input("Año: "))\nwhile actual != pasado:\n    actual -= 1\n    print(actual)' },
+
+{ id: 12, t: "12) Deletrear nombre", d: "Muestra cada letra.", c: 'nombre = input("Nombre: ")\nfor l in nombre:\n    print(l)' },
+
+{ id: 13, t: "13) Vocales", d: "Detecta vocales.", c: 'texto = input("Texto: ")\nvocales = "aeiouAEIOU"\nfor l in texto:\n    if l in vocales:\n        print("Acá hay una vocal")' }
+]},
+
+{
+id: "logica",
+nombre: "Operaciones relacionales y lógicas",
+ejercicios: [
+{ id: 14, t: "14) Letra elegida V2", d: "Valida rango y espacios.", c: 'frase = input("Frase: ")\npos = int(input("Posición: "))\nif pos < len(frase):\n    if frase[pos] == " ":\n        print("Espacio")\n    else:\n        print(frase[pos])\nelse:\n    print("Fuera de rango")' },
+
+{ id: 15, t: "15) Trabajar o no", d: "Decisión por edad y género.", c: 'edad = int(input("Edad: "))\ng = input("Genero (M/F): ").upper()\nif edad < 18 or (g=="F" and edad>=60) or (g=="M" and edad>=65):\n    print("Vacaciones")\nelse:\n    print("Trabajar")' }
+]},
+
+{
+id: "juegos",
+nombre: "Variables y Tipos de datoss",
+ejercicios: [
+{ id: 16, t: "16) Mulero", d: "Siempre gana la compu.", c: 'n = int(input("Número: "))\nprint(n+1, "te gané")' },
+
+{ id: 17, t: "17) Pizza", d: "Porciones sobrantes.", c: 'p = int(input("Personas: "))\npiz = int(input("Pizzas: "))\nprint((piz*8)%p)' },
+
+{ id: 18, t: "18) Apócope", d: "Acorta nombres largos.", c: 'nombre = input("Nombre: ")\nif len(nombre)>4:\n    print(nombre[:4])' },
+
+{ id: 19, t: "19) Caliente", d: "Juego de dados.", c: 'import random\nsuma=0\nwhile True:\n    d=random.randint(1,6)\n    suma+=d\n    if suma>=20:\n        print("Perdiste")\n        break\n    if input("Seguir? ")=="no":\n        break\nprint("Puntaje:",suma)' },
+]},
+
+{
+id: "programas",
+nombre: "Programas interactivos",
+ejercicios: [
+{ id: 20, t: "20) Monedero", d: "Simulación de saldo.", c: 'saldo=0\nwhile True:\n    op=input("C/D/S/X: ").upper()\n    if op=="S": print(saldo)\n    elif op=="C": saldo+=int(input())\n    elif op=="D":\n        m=int(input())\n        if saldo>=m: saldo-=m\n    elif op=="X": break' },
+
+{ id: 21, t: "21) Contraseña", d: "Evalúa fortaleza.", c: 'c=input("Pass: ")\nif len(c)>=8 and any(x.islower() for x in c) and any(x.isupper() for x in c) and any(x.isdigit() for x in c):\n    print("VERDE")\nelif len(c)<5:\n    print("ROJA")\nelse:\n    print("AMARILLA")' }
 ]}
-        ];
+];
 
         let pyodide;
         let editor;
