@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de posibles soluciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --editor-bg: #111827;
+            --console-bg: #000000;
+            --accent: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --code-green: #4ade80;
+            --code-blue: #60a5fa;
+            --code-purple: #c084fc;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: var(--editor-bg);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        .exercise-card {
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .keyword { color: var(--code-purple); }
+        .func { color: var(--code-blue); }
+        .string { color: var(--code-green); }
+        .comment { color: #64748b; font-style: italic; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="max-w-6xl mx-auto mb-12">
+        <h1 class="text-4xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+            Guía de posibles soluciones
+        </h1>
+        <p class="text-slate-400 mb-8">Resoluciones de la Práctica de Programación en Python</p>
+        
+        <div class="relative max-w-md">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-500">
+                <i class="fas fa-search"></i>
+            </span>
+            <input type="text" id="searchInput" placeholder="Buscar ejercicio por título..." 
+                class="w-full bg-slate-800 border border-slate-700 rounded-lg py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
+    </header>
+
+    <!-- Content Section -->
+    <main class="max-w-6xl mx-auto space-y-12" id="exerciseContainer">
+        <!-- Los ejercicios se insertan aquí vía JS -->
+    </main>
+
+    <footer class="max-w-6xl mx-auto mt-20 pb-10 text-center text-slate-500 border-t border-slate-800 pt-8">
+        <p>Referencia de Prácticas Python © 2024</p>
+    </footer>
+
+    <script>
+        const exercises = [
+            {
+                id: 1,
+                title: "1) Hola mundo",
+                code: `frase = "Hola mundo"\n\ndef main():\n    print(frase)\n\nmain()`,
+                console: "> Ejecutando...\nHola mundo"
+            },
+            {
+                id: 2,
+                title: "2) ASPO",
+                code: `frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()`,
+                console: "Alberto, ¿terminó la cuarentena?\nAlberto, ¿terminó la cuarentena?\n... (40 veces)"
+            },
+            {
+                id: 3,
+                title: "3) Castigado",
+                code: `def repetir_n_veces_una_frase(frase, cantidad):\n    for n in range(cantidad):\n        print(frase)\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    cantidad = int(input("Ingrese una cantidad: "))\n    repetir_n_veces_una_frase(frase, cantidad)\n\nmain()`,
+                console: "Ingrese una frase: Hola\nIngrese una cantidad: 2\nHola\nHola"
+            },
+            {
+                id: 4,
+                title: "4) Saludar al usuario",
+                code: `def saludar_segun_nombre_y_edad(nombre, edad):\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    edad = int(input("Ingrese su edad: "))\n    saludar_segun_nombre_y_edad(nombre, edad)\n\nmain()`,
+                console: "Ingrese su nombre: juan\nIngrese su edad: 23\nHola juan tu edad es 23\nHola juan. Tu edad es 23."
+            },
+            {
+                id: 5,
+                title: "5) Comentar sobre el nombre",
+                code: `def comentar_con_nombre(nombre):\n    print(f"{nombre}, ¡ese es un hermoso nombre!")\n\ndef calcular_cantidad_letras(nombre):\n    longitud_nombre = len(nombre)\n    print(f"{nombre}, tu nombre tiene {longitud_nombre} letras")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_con_nombre(nombre)\n    calcular_cantidad_letras(nombre)\n\nmain()`,
+                console: "Ingrese su nombre: juan\njuan, ¡ese es un hermoso nombre!\njuan, tu nombre tiene 4 letras"
+            },
+            {
+                id: 6,
+                title: "6) La (letra) elegida",
+                code: `def mostrar_letra_elegida(frase, posicion):\n    print(f"En la posicion {posicion} hay {frase[posicion]}")\n\ndef main():\n    frase = input("Ingrese el texto: ")\n    posicion = int(input("Ingrese la posiciòn: "))\n    mostrar_letra_elegida(frase, posicion)\n\nmain()`,
+                console: "Ingrese el texto: hola mundo\nIngrese la posiciòn: 3\nEn la posicion 3 hay a"
+            },
+            {
+                id: 7,
+                title: "7) Comentando nombres (v2)",
+                code: `def comentar_segun_longitud_nombre(nombre):\n    longitud_nombre = len(nombre)\n    if longitud_nombre <= 5:\n        print(f"{nombre}, ¡un nombre maravilloso!")\n    else:\n        print(f"{nombre}, ¡ese es un gran nombre!")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_segun_longitud_nombre(nombre)\n\nmain()`,
+                console: "Ingrese su nombre: sebastian\nsebastian, ¡ese es un gran nombre!"
+            },
+            {
+                id: 8,
+                title: "8) El autómata que cuenta",
+                code: `def contar_del_uno_al_diez():\n    for contador in range(1, 11):\n        print(contador)\n\ndef main():\n    contar_del_uno_al_diez()\n\nmain()`,
+                console: "1\n2\n3\n...\n10"
+            },
+            {
+                id: 9,
+                title: "9) Eco",
+                code: `def imprimir_numeros(metros):\n    for contador in range(1, metros+1):\n        print(f\"{contador} ECO\")\n\ndef main():\n    metros = int(input(\"Ingrese la cantidad de metros: \"))\n    imprimir_numeros(metros)\n\nmain()`,
+                console: "Ingrese la cantidad de metros: 4\n1 ECO\n2 ECO\n3 ECO\n4 ECO"
+            },
+            {
+                id: 10,
+                title: "10) Cuenta Regresiva",
+                code: `def contar_en_forma_regresiva():\n    for contador in range(10, 0, -1):\n        print(contador)\n\ndef main():\n    contar_en_forma_regresiva()\n\nmain()`,
+                console: "10\n9\n...\n1"
+            },
+            {
+                id: 11,
+                title: "11) Zamba viaja al pasado",
+                code: `ANIO_ACTUAL = 2026\n\ndef informar_anios_viajados_del_pasado(anio_actual, anio_del_pasado):\n    while anio_actual != anio_del_pasado:\n        anio_actual -= 1\n        print(f"En el año {anio_actual} Viajó al pasado")\n\ndef main():\n    anio_del_pasado = int(input("Ingrese un año: "))\n    informar_anios_viajados_del_pasado(ANIO_ACTUAL, anio_del_pasado)\n\nmain()`,
+                console: "Ingrese un año: 2024\nEn el año 2025 Viajó al pasado\nEn el año 2024 Viajó al pasado"
+            },
+            {
+                id: 12,
+                title: "12) Deletreando nombres",
+                code: `def deletrear_nombre(nombre):\n    for letra in range(len(nombre)):\n        print(nombre[letra])\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    deletrear_nombre(nombre)\n\nmain()`,
+                console: "Ingrese su nombre: juan\nj\nu\na\nn"
+            },
+            {
+                id: 13,
+                title: "13) Acá hay una vocal",
+                code: `vocales = "aeiouáéíóú"\n\ndef mostrar_vocales(texto):\n    for letra in texto:\n        print(letra)\n        if letra.lower() in vocales:\n            print("Acá hay una vocal")\n\ndef main():\n    texto = input("Ingrese un texto: ")\n    mostrar_vocales(texto)\n\nmain()`,
+                console: "Ingrese un texto: hola\nh\no\nAcá hay una vocal\nl\na\nAcá hay una vocal"
+            },
+            {
+                id: 14,
+                title: "14) Letra elegida (V2)",
+                code: `def informar_letra_segun_posicion(frase, posicion):\n    if posicion < len(frase):\n        letra = frase[posicion]\n        tipo = "espacio" if letra == " " else f"letra {letra}"\n        print(f"En la posicion {posicion} hay {tipo}")\n    else:\n        print("Fuera de rango")`,
+                console: "Ingrese una frase: python\nIngrese una posicion: 0\nEn la posicion 0 hay letra p"
+            },
+            {
+                id: 15,
+                title: "15) Tenés que trabajar",
+                code: `def informar_segun_edad_y_genero(edad, genero):\n    if (edad < 18) or (edad >= 60 and genero == "F") or (edad >= 65 and genero == "M"):\n        print("Podés ir de viaje")\n    else:\n        print("Tenés que trabajar")`,
+                console: "Ingrese su edad: 60\nIngrese su genero: M\nTenés que trabajar"
+            },
+            {
+                id: 16,
+                title: "16) Mulero",
+                code: `def jugar_mulero(numero):\n    print(f"{numero + 1}, te gané")\n\ndef main():\n    n = int(input("Número (1-9): "))\n    jugar_mulero(n)\n\nmain()`,
+                console: "Número (1-9): 5\n6, te gané"
+            },
+            {
+                id: 17,
+                title: "17) Porciones de pizza",
+                code: `def calcular_sobrante(personas, pizzas):\n    return (pizzas * 8) % personas\n\ndef main():\n    per = int(input("Personas: "))\n    piz = int(input("Pizzas: "))\n    print(f"Sobran: {calcular_sobrante(per, piz)}")\n\nmain()`,
+                console: "Personas: 4\nPizzas: 8\nLa cantidad de porciones que sobran son: 0"
+            },
+            {
+                id: 18,
+                title: "18) Generador de apócopes",
+                code: `def generar_apocope(nombre):\n    if len(nombre) > 4:\n        print(f"Te voy a decir {nombre[:4]}")\n\ndef main():\n    nom = input("Nombre: ")\n    print(f"Hola {nom}")\n    generar_apocope(nom)\n\nmain()`,
+                console: "Nombre: Mariela\nHola Mariela\nTe voy a decir Mari"
+            },
+            {
+                id: 19,
+                title: "19) Calentito (Dados)",
+                code: `import random\n\ndef jugar():\n    suma = 0\n    while suma < 20:\n        dado = random.randint(1, 6)\n        suma += dado\n        print(f"Salió {dado}, suma: {suma}")\n        if input("¿Seguir? (s/n): ") == "n": break\n    print(f"Final: {suma}")`,
+                console: "Salió el 4\nSuma actual: 4\n¿Querés seguir? (si/no): no\nGanaste"
+            },
+            {
+                id: 20,
+                title: "20) Monedero Electrónico",
+                code: `def monedero():\n    saldo = 0\n    while True:\n        op = input("Opción (S, C, D, X): ").upper()\n        if op == "X": break\n        elif op == "C": saldo += int(input("Monto: "))\n        print(f"Saldo actual: {saldo}")`,
+                console: "Indique tipo de operación...\nC\nMonto: 400\nSaldo: $ 400"
+            },
+            {
+                id: 21,
+                title: "21) Fortaleza de Contraseña",
+                code: `def verificar_fortaleza(psw):\n    if len(psw) >= 8 and any(c.isupper() for c in psw) and any(c.isdigit() for c in psw):\n        print("VERDE")\n    elif len(psw) < 5:\n        print("ROJA")\n    else: print("AMARILLA")`,
+                console: "Ingresar contraseña: hola\ncontraseña roja"
+            }
+        ];
+
+        function createExerciseCard(ex) {
+            return `
+                <section class="exercise-card bg-slate-800 rounded-xl overflow-hidden shadow-2xl transition-all" data-title="${ex.title.toLowerCase()}">
+                    <div class="p-6">
+                        <h2 class="text-xl font-bold text-blue-400 mb-6">
+                            ${ex.title}
+                        </h2>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Editor Window -->
+                            <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-900 shadow-lg">
+                                <div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
+                                    <span class="text-xs font-bold text-slate-400 tracking-widest uppercase">Editor</span>
+                                </div>
+                                <div class="p-4 custom-scrollbar overflow-x-auto">
+                                    <pre class="code-font text-sm leading-relaxed"><code class="text-slate-300">${formatCode(ex.code)}</code></pre>
+                                </div>
+                            </div>
+
+                            <!-- Console Window -->
+                            <div class="rounded-lg overflow-hidden border border-slate-700 bg-black shadow-lg">
+                                <div class="bg-zinc-900 px-4 py-2 flex items-center justify-between border-b border-zinc-800">
+                                    <span class="text-xs font-bold text-green-500 tracking-widest uppercase">Consola</span>
+                                </div>
+                                <div class="p-4 bg-black min-h-[150px]">
+                                    <pre class="code-font text-sm text-zinc-300"><code>${ex.console}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function formatCode(code) {
+            return code
+                .replace(/def /g, '<span class="keyword">def</span> ')
+                .replace(/if /g, '<span class="keyword">if</span> ')
+                .replace(/else/g, '<span class="keyword">else</span>')
+                .replace(/elif/g, '<span class="keyword">elif</span>')
+                .replace(/for /g, '<span class="keyword">for</span> ')
+                .replace(/while /g, '<span class="keyword">while</span> ')
+                .replace(/return /g, '<span class="keyword">return</span> ')
+                .replace(/print/g, '<span class="func">print</span>')
+                .replace(/input/g, '<span class="func">input</span>')
+                .replace(/int/g, '<span class="func">int</span>')
+                .replace(/len/g, '<span class="func">len</span>')
+                .replace(/range/g, '<span class="func">range</span>')
+                .replace(/"(.*?)"/g, '<span class="string">"$1"</span>')
+                .replace(/'(.*?)'/g, '<span class="string">\'$1\'</span>');
+        }
+
+        const container = document.getElementById('exerciseContainer');
+        const searchInput = document.getElementById('searchInput');
+
+        function renderExercises() {
+            container.innerHTML = exercises.map(ex => createExerciseCard(ex)).join('');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = container.querySelectorAll('.exercise-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                card.style.display = title.includes(term) ? 'block' : 'none';
+            });
+        });
+
+        window.onload = renderExercises;
+    </script>
+</body>
+</html>
