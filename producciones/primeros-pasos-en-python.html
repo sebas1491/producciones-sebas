@@ -175,19 +175,20 @@
 
     <script>
         const guia = [
-            { id: "es", nombre: "Entrada y Salida", ejercicios: [
-                { id: 1, t: "1) Hola mundo", d: "El programa básico para empezar.", c: 'print("¡Hola Mundo!")' },
-                { id: 2, t: "2) Alberto ASPO", d: "Bucle for con variables globales.", c: 'frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()' },
-                { id: 3, t: "3) Repetidor Pro", d: "Pide una frase y una cantidad para repetir.", c: 'def repetir_n_veces_una_frase(frase, cantidad):\n    for n in range(cantidad):\n        print(frase)\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    cantidad = int(input("Ingrese una cantidad: "))\n    repetir_n_veces_una_frase(frase, cantidad)\n\nmain()' },
-                { id: 4, t: "4) Saludos Mixtos", d: "Muestra nombre y edad. Corrección: Convertir int a str para concatenar.", c: 'def saludar_segun_nombre_y_edad(nombre, edad):\n    print("Hola", nombre, "tu edad es", edad)\n    # Usamos str(edad) para evitar el error de tipos\n    print("Hola " + nombre + " tu edad es " + str(edad))\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    edad = int(input("Ingrese su edad: "))\n    saludar_segun_nombre_y_edad(nombre, edad)\n\nmain()' }
-            ]},
-            { id: "juegos", nombre: "Lógica y Juegos", ejercicios: [
-                { id: 9, t: "9) Juego del Caliente", d: "Simulador de dados. Corregido para evitar errores de variables no definidas.", c: 'import random\n\ndef tirar_dado():\n    numero = random.randint(1, 6)\n    print(f"Salió el {numero}")\n    return numero\n\ndef jugar_caliente():\n    puntaje_jugador = 0\n    seguir = "si"\n    \n    while seguir == "si":\n        valor = tirar_dado()\n        puntaje_jugador += valor\n        seguir = input("Ingrese si quiere seguir o no (si/no): ").lower()\n    \n    puntaje_programa = random.randint(1, 12)\n    print(f"Tu puntaje final es: {puntaje_jugador}")\n    print(f"Puntaje del programa: {puntaje_programa}")\n    \n    if puntaje_jugador > puntaje_programa:\n        print("¡Ganaste!")\n    elif puntaje_jugador < puntaje_programa:\n        print("Gana el programa.")\n    else:\n        print("¡Empate!")\n\ndef main():\n    jugar_caliente()\n\nmain()' },
-                { id: 5, t: "5) Calculadora Básica", d: "Suma de dos números ingresados.", c: 'n1 = int(input("Primer número: "))\nn2 = int(input("Segundo número: "))\nprint(f"La suma es: {n1 + n2}")' },
-                { id: 6, t: "6) Mayor de edad", d: "Uso de if/else para verificar edad.", c: 'edad = int(input("Tu edad: "))\nif edad >= 18:\n    print("Eres mayor de edad")\nelse:\n    print("Eres menor de edad")' },
-                { id: 7, t: "7) Longitud de nombre", d: "Mensajes según el largo del texto.", c: 'nombre = input("Tu nombre: ")\nif len(nombre) > 7:\n    print("¡Tienes un nombre muy largo!")\nelse:\n    print("Tu nombre es corto.")' },
-                { id: 8, t: "8) Cuenta regresiva", d: "Uso de time.sleep para pausas.", c: 'import time\nprint("Iniciando cuenta...")\nfor i in range(5, 0, -1):\n    print(i)\n    time.sleep(1)\nprint("¡DESPEGUE!")' }
-            ]}
+            { id: "es", nombre: "Práctica de Entrada y Salida",
+ejercicios: [
+{ id: 1, t: "1) Hola mundo", d: "Imprime Hola Mundo.", c: 'frase = "Hola mundo"\n\ndef main():\n    print(frase)\n\nmain()' },
+
+{ id: 2, t: "2) ASPO", d: "Repite una frase 40 veces.", c: 'frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()' },
+
+{ id: 3, t: "3) Castigado", d: "Repite frase ingresada.", c: 'def repetir_n_veces_una_frase(frase, cantidad):\n    for n in range(cantidad):\n        print(frase)\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    cantidad = int(input("Ingrese una cantidad: "))\n    repetir_n_veces_una_frase(frase, cantidad)\n\nmain()' },
+
+{ id: 4, t: "4) Saludar usuario", d: "Saluda con nombre y edad.", c: 'def saludar(nombre, edad):\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Nombre: ")\n    edad = int(input("Edad: "))\n    saludar(nombre, edad)\n\nmain()' },
+
+{ id: 5, t: "5) Comentar nombre", d: "Muestra comentario y cantidad de letras.", c: 'def comentar(nombre):\n    print(f"{nombre}, ¡ese es un hermoso nombre!")\n    print(f"{nombre}, tu nombre tiene {len(nombre)} letras")\n\ndef main():\n    nombre = input("Nombre: ")\n    comentar(nombre)\n\nmain()' },
+
+{ id: 6, t: "6) Letra elegida", d: "Muestra letra en posición.", c: 'def mostrar(frase, pos):\n    print(frase[pos])\n\ndef main():\n    frase = input("Frase: ")\n    pos = int(input("Posición: "))\n    mostrar(frase, pos)\n\nmain()' }
+]}
         ];
 
         let pyodide;
