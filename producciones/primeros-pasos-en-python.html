@@ -179,70 +179,69 @@ const guia = [
 id: "es",
 nombre: "Práctica de Entrada y Salida",
 ejercicios: [
-{ id: 1, t: "1) Hola mundo", d: "Programa que imprime “Hola Mundo” en la salida.", c: 'frase = "Hola mundo"\n\ndef main():\n    print(frase)\n\nmain()' },
+{ id: 1, t: "1) Hola mundo", d: "Al aprender un nuevo lenguaje de programación usualmente empezamos por lo que llamamos “¡Hola Mundo!”. Es un programa que sólo imprime “¡Hola Mundo!” en la salida.", c: " " },
 
-{ id: 2, t: "2) ASPO", d: "Imprime 40 veces la frase: Alberto, ¿terminó la cuarentena?", c: 'frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()' },
+{ id: 2, t: "2) ASPO", d: "En Argentina se realizó un aislamiento social preventivo y obligatorio. Dependiendo de tu provincia tuvo distintas duraciones.\nVamos a preguntar 40 veces al presidente si ya terminó la cuarentena.\nTexto: Alberto, ¿terminó la cuarentena?\n¿Cómo repetimos en este nuevo lenguaje?", c: " " },
 
-{ id: 3, t: "3) Castigado", d: "Pide una frase y una cantidad, luego la repite.", c: 'def repetir_n_veces_una_frase(frase, cantidad):\n    for n in range(cantidad):\n        print(frase)\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    cantidad = int(input("Ingrese una cantidad: "))\n    repetir_n_veces_una_frase(frase, cantidad)\n\nmain()' },
+{ id: 3, t: "3) Castigado", d: "En otra época, cuando un alumno/a se ‘portaba mal’ se le encomendaba una tarea como castigo: escribir muchas veces lo mismo.\nVamos a elaborar un programa que realice esa tarea por nosotros: debe capturar una frase y una cantidad, para luego imprimir por pantalla la frase la cantidad de veces ingresada.", c: " " },
 
-{ id: 4, t: "4) Saludar usuario", d: "Solicita nombre y edad y muestra un mensaje personalizado.", c: 'def saludar_segun_nombre_y_edad(nombre, edad):\n    print("Hola", nombre, "tu edad es", edad)\n    print("Hola " + nombre + " tu edad es " + edad)\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    edad = int(input("Ingrese su edad: "))\n    saludar_segun_nombre_y_edad(nombre, edad)\n\nmain()' },
+{ id: 4, t: "4) Saludar al usuario", d: "Ahora le vamos a solicitar al usuario que ingrese su nombre.\nLuego su programa al ejecutar, debe utilizar dicho nombre para escribir en la salida un mensaje personalizado, por ejemplo: “Hola! Rene”.", c: " " },
 
-{ id: 5, t: "5) Comentar nombre", d: "Muestra un mensaje sobre el nombre y la cantidad de letras.", c: 'def comentar_con_nombre(nombre):\n    print(f"{nombre}, ¡ese es un hermoso nombre!")\n\ndef calcular_cantidad_letras(nombre):\n    longitud_nombre = len(nombre)\n    print(f"{nombre}, tu nombre tiene {longitud_nombre} letras")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_con_nombre(nombre)\n    calcular_cantidad_letras(nombre)\n\nmain()' },
+{ id: 5, t: "5) Comentar sobre el nombre del usuario", d: "Vamos a elaborar un nuevo programa interactivo que, luego de solicitar el ingreso de un nombre, muestre un comentario personalizado e informe la cantidad de letras que tiene el nombre.\nPara conseguirlo podremos seguir dos simples pasos:\n1. Permitir que la persona ingrese su nombre,\n2. Mostrar un mensaje personalizado que incluya el nombre ingresado.\nEjemplo: Eva, ¡ese es un hermoso nombre!\n3. Mostrar un mensaje que incluya la cantidad de letras del nombre ingresado.\nEjemplo: Eva, tu nombre tiene 3 letras.\nNo nos olvidemos de separar las tareas en procedimientos.", c: " " },
 
-{ id: 6, t: "6) Letra elegida", d: "Muestra la letra de una frase según la posición indicada.", c: 'def mostrar_letra_elegida(frase, posicion):\n    print(f"En la posicion {posicion} hay {frase[posicion]}")\n\ndef main():\n    frase = input("Ingrese el texto: ")\n    posicion = int(input("Ingrese la posición: "))\n    mostrar_letra_elegida(frase, posicion)\n\nmain()' }
+{ id: 6, t: "6) La (letra) elegida", d: "Vamos a elaborar un nuevo programa interactivo que, luego de solicitar el ingreso de una frase y un número, muestre la letra que se encuentra en la posición indicada por el número.\nPara conseguirlo, podremos seguir estos pasos:\n1. Solicitar el ingreso de una frase.\n2. Solicitar el ingreso de un número.\n3. Mostrar la letra correspondiente.\n¿Seguro?, ¿se cuenta desde cero o desde uno?", c: " " }
 ]},
 
 {
 id: "repeticion",
 nombre: "Repetición y Alternativas condicionales",
 ejercicios: [
-{ id: 7, t: "7) Nombre corto/largo", d: "Muestra un mensaje distinto según la longitud del nombre.", c: 'def comentar_segun_longitud_nombre(nombre):\n    if len(nombre) <= 5:\n        print(f"{nombre}, ¡un nombre maravilloso!")\n    else:\n        print(f"{nombre}, ¡ese es un gran nombre!")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_segun_longitud_nombre(nombre)\n\nmain()' },
+{ id: 7, t: "7) Comentando nombres (v2)", d: "Vamos a elaborar un nuevo programa interactivo que, luego de solicitar el ingreso de un nombre, muestre un comentario personalizado según se trate de un nombre corto (hasta 5 letras) o largo (más de 5 letras).", c: " " },
 
-{ id: 8, t: "8) Contar 1 a 10", d: "Cuenta del 1 al 10.", c: 'def contar_del_uno_al_diez():\n    for contador in range(1, 11):\n        print(contador)\n\ndef main():\n    contar_del_uno_al_diez()\n\nmain()' },
+{ id: 8, t: "8) El autómata que puede contar", d: "Nos proponemos elaborar un programa con capacidad de contar desde 1 hasta 10.\n¿Parece complicado? ¡Estamos preparados!", c: " " },
 
-{ id: 9, t: "9) Eco", d: "Imprime la palabra ECO según la cantidad ingresada.", c: 'def imprimir_numeros(metros):\n    for contador in range(1, metros+1):\n        print(f"{contador} ECO")\n\ndef main():\n    metros = int(input("Ingrese la cantidad de metros: "))\n    imprimir_numeros(metros)\n\nmain()' },
+{ id: 9, t: "9) Eco", d: "Vamos a elaborar un nuevo programa interactivo que, luego de solicitar el ingreso de la profundidad en metros de una cueva, muestre esa cantidad de veces la palabra “Eco” en la salida.", c: " " },
 
-{ id: 10, t: "10) Cuenta regresiva", d: "Cuenta regresiva desde 10.", c: 'def contar_en_forma_regresiva():\n    for contador in range(10, 0, -1):\n        print(contador)\n\ndef main():\n    contar_en_forma_regresiva()\n\nmain()' },
+{ id: 10, t: "10) Cuenta Regresiva", d: "Vamos a elaborar un nuevo programa con capacidad de conteo.\nEsta vez se trata de la cuenta regresiva propia de los lanzamientos de cohetes.", c: " " },
 
-{ id: 11, t: "11) Viajar al pasado", d: "Simula un viaje al pasado mostrando los años.", c: 'ANIO_ACTUAL = 2026\n\ndef viajar():\n    anio = int(input("Ingrese un año: "))\n    while ANIO_ACTUAL != anio:\n        global ANIO_ACTUAL\n        ANIO_ACTUAL -= 1\n        print(f"En el año {ANIO_ACTUAL} viajó al pasado")\n\nviajar()' },
+{ id: 11, t: "11) Zamba viaja al pasado", d: "Vamos a elaborar un programa interactivo donde el usuario ingresa un año en el pasado y el programa simula el viaje mostrando cada año recorrido.", c: " " },
 
-{ id: 12, t: "12) Deletrear nombre", d: "Muestra cada letra del nombre.", c: 'def deletrear_nombre(nombre):\n    for letra in range(len(nombre)):\n        print(nombre[letra])\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    deletrear_nombre(nombre)\n\nmain()' },
+{ id: 12, t: "12) Deletreando nombres", d: "Vamos a elaborar un nuevo programa interactivo con capacidad de deletrear nombres.\nEl resultado debería mostrar en la salida una línea con cada una de las letras del nombre ingresado.", c: " " },
 
-{ id: 13, t: "13) Vocales", d: "Indica cuándo hay una vocal en el texto.", c: 'vocales = "aeiouAEIOUáéíóúÁÉÍÓÚ"\n\ndef mostrar_vocales(texto):\n    for letra in range(len(texto)):\n        if texto[letra] in vocales:\n            print("Acá hay una vocal")\n\ndef main():\n    texto = input("Ingrese un texto: ")\n    mostrar_vocales(texto)\n\nmain()' }
+{ id: 13, t: "13) Acá hay una vocal", d: "Elaborar un nuevo programa interactivo que luego de ingresar un texto, imprima la frase “Acá hay una vocal” por cada vocal que tenga el texto ingresado.", c: " " }
 ]},
 
 {
 id: "logica",
 nombre: "Operaciones relacionales y lógicas",
 ejercicios: [
-{ id: 14, t: "14) Letra elegida V2", d: "Valida posición y distingue entre letra o espacio.", c: 'def informar(frase, posicion):\n    if posicion < len(frase):\n        if frase[posicion] == " ":\n            print("Espacio")\n        else:\n            print(frase[posicion])\n    else:\n        print("Esta posición está fuera de rango")\n\nfrase = input("Frase: ")\npos = int(input("Posición: "))\ninformar(frase, pos)' },
+{ id: 14, t: "14) La (letra) elegida (V2)", d: "Retomar el ejercicio anterior y modificarlo para validar posiciones fuera de rango e indicar si hay espacio en la posición elegida.", c: " " },
 
-{ id: 15, t: "15) Trabajar o no", d: "Decide si la persona trabaja o se jubila.", c: 'edad = int(input("Edad: "))\ngenero = input("Genero: ").upper()\n\nif (edad < 18) or (genero == "F" and edad >= 60) or (genero == "M" and edad >= 65):\n    print("Podés ir de vacaciones")\nelse:\n    print("Tenés que trabajar")' }
+{ id: 15, t: "15) Tenés que trabajar", d: "En Argentina si sos mujer a los 60 años te jubilás y si sos varón a los 65 años te jubilás.\nA los menores de 18 los mandaremos de vacaciones junto al grupo que se jubila.\nAl resto los mandaremos a trabajar.", c: " " }
 ]},
 
 {
 id: "juegos",
 nombre: "Variables y Tipos de datos",
 ejercicios: [
-{ id: 16, t: "16) Mulero", d: "Siempre gana la computadora.", c: 'def jugar_mulero(numero):\n    numero += 1\n    print(f"{numero}, te gané")\n\nnumero = int(input("Ingrese un número: "))\njugar_mulero(numero)' },
+{ id: 16, t: "16) Mulero", d: "Juego simple donde el usuario ingresa un número y la computadora siempre gana.", c: " " },
 
-{ id: 17, t: "17) Pizza", d: "Calcula cuántas porciones sobran.", c: 'def calcular(c_personas, c_pizzas):\n    return (c_pizzas*8) % c_personas\n\np = int(input("Personas: "))\npz = int(input("Pizzas: "))\nprint(calcular(p, pz))' },
+{ id: 17, t: "17) Porciones de pizza", d: "Calcular cuántas porciones de pizza sobran sabiendo que cada pizza tiene 8 porciones y todas las personas comen la misma cantidad.", c: " " },
 
-{ id: 18, t: "18) Apócope", d: "Genera un nombre corto si es largo.", c: 'nombre = input("Nombre: ")\nprint(f"Hola {nombre}")\nif len(nombre) > 4:\n    print("Te voy a decir", nombre[:4])' },
+{ id: 18, t: "18) Generador de apócopes", d: "Programa que acorta nombres largos generando un apócope.", c: " " },
 
-{ id: 19, t: "19) Caliente", d: "Juego donde se suman dados hasta plantarse.", c: 'import random\nsuma = 0\nwhile True:\n    dado = random.randint(1,6)\n    suma += dado\n    print("Suma:", suma)\n    if suma >= 20:\n        print("Perdiste")\n        break\n    if input("Seguir? ") == "no":\n        break\nprint("Resultado final:", suma)' }
+{ id: 19, t: "19) Calentito", d: "Juego donde se tiran dados, se acumulan puntos y el jugador decide si seguir o plantarse.", c: " " }
 ]},
 
 {
 id: "programas",
 nombre: "Programas interactivos",
 ejercicios: [
-{ id: 20, t: "20) Monedero", d: "Simula operaciones de saldo.", c: 'saldo = 0\nwhile True:\n    tipo = input("C/D/S/X: ").upper()\n    if tipo == "S": print(saldo)\n    elif tipo == "C": saldo += int(input())\n    elif tipo == "D":\n        m = int(input())\n        if saldo >= m: saldo -= m\n        else: print("Saldo insuficiente")\n    elif tipo == "X": break' },
+{ id: 20, t: "20) Monedero Electrónico", d: "Programa interactivo que simula cargar, descontar y consultar saldo.", c: " " },
 
-{ id: 21, t: "21) Contraseña", d: "Evalúa si es segura.", c: 'c = input("Contraseña: ")\nif len(c)>=8 and any(x.islower() for x in c) and any(x.isupper() for x in c) and any(x.isdigit() for x in c):\n    print("VERDE")\nelif len(c)<5:\n    print("ROJA")\nelse:\n    print("AMARILLA")' }
+{ id: 21, t: "21) Fortaleza de Contraseña", d: "Programa que indica si una contraseña es fuerte, débil o media según ciertos criterios.", c: " " }
 ]}
 ];
-
         let pyodide;
         let editor;
         let currentResolver = null;
