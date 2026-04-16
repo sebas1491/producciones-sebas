@@ -139,7 +139,7 @@
             {
                 id: 9,
                 title: "9) Eco",
-                code: `def imprimir_numeros(metros):\n    for contador in range(1, metros+1):\n        print(f\"{contador} ECO\")\n\ndef main():\n    metros = int(input(\"Ingrese la cantidad de metros: \"))\n    imprimir_numeros(metros)\n\nmain()`,
+                code: `def imprimir_numeros(metros):\n    for contador in range(1, metros+1):\n        print(f"{contador} ECO")\n\ndef main():\n    metros = int(input("Ingrese la cantidad de metros: "))\n    imprimir_numeros(metros)\n\nmain()`,
                 console: "Ingrese la cantidad de metros: 4\n1 ECO\n2 ECO\n3 ECO\n4 ECO"
             },
             {
@@ -229,6 +229,9 @@
                             <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-900 shadow-lg">
                                 <div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
                                     <span class="text-xs font-bold text-slate-400 tracking-widest uppercase">Editor</span>
+                                    <button onclick="copyCode(${ex.id}, this)" class="text-slate-400 hover:text-white transition-colors" title="Copiar código">
+                                        <i class="far fa-copy"></i>
+                                    </button>
                                 </div>
                                 <div class="p-4 custom-scrollbar overflow-x-auto">
                                     <pre class="code-font text-sm leading-relaxed"><code class="text-slate-300">${formatCode(ex.code)}</code></pre>
@@ -252,20 +255,13 @@
 
         function formatCode(code) {
             return code
-                .replace(/def /g, '<span class="keyword">def</span> ')
-                .replace(/if /g, '<span class="keyword">if</span> ')
-                .replace(/else/g, '<span class="keyword">else</span>')
-                .replace(/elif/g, '<span class="keyword">elif</span>')
-                .replace(/for /g, '<span class="keyword">for</span> ')
-                .replace(/while /g, '<span class="keyword">while</span> ')
-                .replace(/return /g, '<span class="keyword">return</span> ')
-                .replace(/print/g, '<span class="func">print</span>')
-                .replace(/input/g, '<span class="func">input</span>')
-                .replace(/int/g, '<span class="func">int</span>')
-                .replace(/len/g, '<span class="func">len</span>')
-                .replace(/range/g, '<span class="func">range</span>')
+                // 1. Textos (strings) primero, para que sus comillas no rompan las clases de los spans HTML
                 .replace(/"(.*?)"/g, '<span class="string">"$1"</span>')
-                .replace(/'(.*?)'/g, '<span class="string">\'$1\'</span>');
+                .replace(/'(.*?)'/g, '<span class="string">\'$1\'</span>')
+                
+                // 2. Usamos \b (word boundary) para que palabras como 'int' no reemplacen parte de 'print'
+                .replace(/\b(def|if|else|elif|for|while|return)\b/g, '<span class="keyword">$1</span>')
+                .replace(/\b(print|input|int|len|range)\b/g, '<span class="func">$1</span>');
         }
 
         const container = document.getElementById('exerciseContainer');
@@ -283,6 +279,27 @@
                 card.style.display = title.includes(term) ? 'block' : 'none';
             });
         });
+
+        function copyCode(id, btn) {
+            const exercise = exercises.find(e => e.id === id);
+            if (exercise) {
+                const textArea = document.createElement("textarea");
+                textArea.value = exercise.code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    const icon = btn.querySelector('i');
+                    icon.className = 'fas fa-check text-green-400';
+                    setTimeout(() => {
+                        icon.className = 'far fa-copy';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Error al copiar', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        }
 
         window.onload = renderExercises;
     </script>
