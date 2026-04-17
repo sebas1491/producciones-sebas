@@ -169,13 +169,13 @@
             {
                 id: 14,
                 title: "14) Letra elegida (V2)",
-                code: `def informar_letra_segun_posicion(frase, posicion):\n    if posicion < len(frase):\n        letra = frase[posicion]\n        tipo = "espacio" if letra == " " else f"letra {letra}"\n        print(f"En la posicion {posicion} hay {tipo}")\n    else:\n        print("Fuera de rango")`,
+                code: `def informar_letra_segun_posicion(frase, posicion):\n    if posicion < len(frase):\n        letra = frase[posicion]\n        tipo = "espacio" if letra == " " else f"letra {letra}"\n        print(f"En la posicion {posicion} hay {tipo}")\n    else:\n        print("Fuera de rango")\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    posicion = int(input("Ingrese una posicion: "))\n    informar_letra_segun_posicion(frase, posicion)\n\nmain()`,
                 console: "Ingrese una frase: python\nIngrese una posicion: 0\nEn la posicion 0 hay letra p"
             },
             {
                 id: 15,
                 title: "15) Tenés que trabajar",
-                code: `def informar_segun_edad_y_genero(edad, genero):\n    if (edad < 18) or (edad >= 60 and genero == "F") or (edad >= 65 and genero == "M"):\n        print("Podés ir de viaje")\n    else:\n        print("Tenés que trabajar")`,
+                code: `def informar_segun_edad_y_genero(edad, genero):\n    if (edad < 18) or (edad >= 60 and genero == "F") or (edad >= 65 and genero == "M"):\n        print("Podés ir de viaje")\n    else:\n        print("Tenés que trabajar")\n\ndef main():\n    edad = int(input("Ingrese su edad: "))\n    genero = input("Ingrese su genero (M/F): ")\n    informar_segun_edad_y_genero(edad, genero)\n\nmain()`,
                 console: "Ingrese su edad: 60\nIngrese su genero: M\nTenés que trabajar"
             },
             {
@@ -199,19 +199,19 @@
             {
                 id: 19,
                 title: "19) Calentito (Dados)",
-                code: `import random\n\ndef jugar():\n    suma = 0\n    while suma < 20:\n        dado = random.randint(1, 6)\n        suma += dado\n        print(f"Salió {dado}, suma: {suma}")\n        if input("¿Seguir? (s/n): ") == "n": break\n    print(f"Final: {suma}")`,
+                code: `import random\n\ndef jugar():\n    suma = 0\n    while suma < 20:\n        dado = random.randint(1, 6)\n        suma += dado\n        print(f"Salió {dado}, suma: {suma}")\n        if input("¿Seguir? (s/n): ") == "n": break\n    print(f"Final: {suma}")\n\ndef main():\n    jugar()\n\nmain()`,
                 console: "Salió el 4\nSuma actual: 4\n¿Querés seguir? (si/no): no\nGanaste"
             },
             {
                 id: 20,
                 title: "20) Monedero Electrónico",
-                code: `def monedero():\n    saldo = 0\n    while True:\n        op = input("Opción (S, C, D, X): ").upper()\n        if op == "X": break\n        elif op == "C": saldo += int(input("Monto: "))\n        print(f"Saldo actual: {saldo}")`,
+                code: `def monedero():\n    saldo = 0\n    while True:\n        op = input("Opción (S, C, D, X): ").upper()\n        if op == "X": break\n        elif op == "C": saldo += int(input("Monto: "))\n        print(f"Saldo actual: {saldo}")\n\ndef main():\n    monedero()\n\nmain()`,
                 console: "Indique tipo de operación...\nC\nMonto: 400\nSaldo: $ 400"
             },
             {
                 id: 21,
                 title: "21) Fortaleza de Contraseña",
-                code: `def verificar_fortaleza(psw):\n    if len(psw) >= 8 and any(c.isupper() for c in psw) and any(c.isdigit() for c in psw):\n        print("VERDE")\n    elif len(psw) < 5:\n        print("ROJA")\n    else: print("AMARILLA")`,
+                code: `def verificar_fortaleza(psw):\n    if len(psw) >= 8 and any(c.isupper() for c in psw) and any(c.isdigit() for c in psw):\n        print("VERDE")\n    elif len(psw) < 5:\n        print("ROJA")\n    else: print("AMARILLA")\n\ndef main():\n    psw = input("Ingresar contraseña: ")\n    verificar_fortaleza(psw)\n\nmain()`,
                 console: "Ingresar contraseña: hola\ncontraseña roja"
             }
         ];
@@ -255,13 +255,13 @@
 
         function formatCode(code) {
             return code
-                // 1. Textos (strings) primero, para que sus comillas no rompan las clases de los spans HTML
+                // 1. Textos (strings) primero
                 .replace(/"(.*?)"/g, '<span class="string">"$1"</span>')
                 .replace(/'(.*?)'/g, '<span class="string">\'$1\'</span>')
                 
-                // 2. Usamos \b (word boundary) para que palabras como 'int' no reemplacen parte de 'print'
-                .replace(/\b(def|if|else|elif|for|while|return)\b/g, '<span class="keyword">$1</span>')
-                .replace(/\b(print|input|int|len|range)\b/g, '<span class="func">$1</span>');
+                // 2. Palabras reservadas y funciones con límites de palabra
+                .replace(/\b(def|if|else|elif|for|while|return|import|in|and|or|any|True|False|break)\b/g, '<span class="keyword">$1</span>')
+                .replace(/\b(print|input|int|len|range|randint|upper|lower)\b/g, '<span class="func">$1</span>');
         }
 
         const container = document.getElementById('exerciseContainer');
