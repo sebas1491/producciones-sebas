@@ -98,7 +98,7 @@
                 id: 2,
                 title: "2) ASPO",
                 code: `frase = "Alberto, ¿terminó la cuarentena?"\ncantidad = 40\n\ndef repetir_frase():\n    for contador in range(cantidad):\n        print(frase)\n\ndef main():\n    repetir_frase()\n\nmain()`,
-                console: "Alberto, ¿terminó la cuarentena?\nAlberto, ¿terminó la cuarentena?\n... (40 veces)"
+                console: "Alberto, ¿terminó la cuarentena?\n... (40 veces)"
             },
             {
                 id: 3,
@@ -110,37 +110,37 @@
                 id: 4,
                 title: "4) Saludar al usuario",
                 code: `def saludar_segun_nombre_y_edad(nombre, edad):\n    print(f"Hola {nombre}. Tu edad es {edad}.")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    edad = int(input("Ingrese su edad: "))\n    saludar_segun_nombre_y_edad(nombre, edad)\n\nmain()`,
-                console: "Ingrese su nombre: juan\nIngrese su edad: 23\nHola juan tu edad es 23\nHola juan. Tu edad es 23."
+                console: "Hola juan. Tu edad es 23."
             },
             {
                 id: 5,
                 title: "5) Comentar sobre el nombre",
                 code: `def comentar_con_nombre(nombre):\n    print(f"{nombre}, ¡ese es un hermoso nombre!")\n\ndef calcular_cantidad_letras(nombre):\n    longitud_nombre = len(nombre)\n    print(f"{nombre}, tu nombre tiene {longitud_nombre} letras")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_con_nombre(nombre)\n    calcular_cantidad_letras(nombre)\n\nmain()`,
-                console: "Ingrese su nombre: juan\njuan, ¡ese es un hermoso nombre!\njuan, tu nombre tiene 4 letras"
+                console: "juan, ¡ese es un hermoso nombre!\njuan, tu nombre tiene 4 letras"
             },
             {
                 id: 6,
                 title: "6) La (letra) elegida",
                 code: `def mostrar_letra_elegida(frase, posicion):\n    print(f"En la posicion {posicion} hay {frase[posicion]}")\n\ndef main():\n    frase = input("Ingrese el texto: ")\n    posicion = int(input("Ingrese la posiciòn: "))\n    mostrar_letra_elegida(frase, posicion)\n\nmain()`,
-                console: "Ingrese el texto: hola mundo\nIngrese la posiciòn: 3\nEn la posicion 3 hay a"
+                console: "En la posicion 3 hay a"
             },
             {
                 id: 7,
                 title: "7) Comentando nombres (v2)",
                 code: `def comentar_segun_longitud_nombre(nombre):\n    longitud_nombre = len(nombre)\n    if longitud_nombre <= 5:\n        print(f"{nombre}, ¡un nombre maravilloso!")\n    else:\n        print(f"{nombre}, ¡ese es un gran nombre!")\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    comentar_segun_longitud_nombre(nombre)\n\nmain()`,
-                console: "Ingrese su nombre: sebastian\nsebastian, ¡ese es un gran nombre!"
+                console: "sebastian, ¡ese es un gran nombre!"
             },
             {
                 id: 8,
                 title: "8) El autómata que cuenta",
                 code: `def contar_del_uno_al_diez():\n    for contador in range(1, 11):\n        print(contador)\n\ndef main():\n    contar_del_uno_al_diez()\n\nmain()`,
-                console: "1\n2\n3\n...\n10"
+                console: "1\n2\n...\n10"
             },
             {
                 id: 9,
                 title: "9) Eco",
                 code: `def imprimir_numeros(metros):\n    for contador in range(1, metros+1):\n        print(f"{contador} ECO")\n\ndef main():\n    metros = int(input("Ingrese la cantidad de metros: "))\n    imprimir_numeros(metros)\n\nmain()`,
-                console: "Ingrese la cantidad de metros: 4\n1 ECO\n2 ECO\n3 ECO\n4 ECO"
+                console: "1 ECO\n2 ECO..."
             },
             {
                 id: 10,
@@ -152,67 +152,67 @@
                 id: 11,
                 title: "11) Zamba viaja al pasado",
                 code: `ANIO_ACTUAL = 2026\n\ndef informar_anios_viajados_del_pasado(anio_actual, anio_del_pasado):\n    while anio_actual != anio_del_pasado:\n        anio_actual -= 1\n        print(f"En el año {anio_actual} Viajó al pasado")\n\ndef main():\n    anio_del_pasado = int(input("Ingrese un año: "))\n    informar_anios_viajados_del_pasado(ANIO_ACTUAL, anio_del_pasado)\n\nmain()`,
-                console: "Ingrese un año: 2024\nEn el año 2025 Viajó al pasado\nEn el año 2024 Viajó al pasado"
+                console: "En el año 2024 Viajó al pasado"
             },
             {
                 id: 12,
                 title: "12) Deletreando nombres",
                 code: `def deletrear_nombre(nombre):\n    for letra in range(len(nombre)):\n        print(nombre[letra])\n\ndef main():\n    nombre = input("Ingrese su nombre: ")\n    deletrear_nombre(nombre)\n\nmain()`,
-                console: "Ingrese su nombre: juan\nj\nu\na\nn"
+                console: "j\nu\na\nn"
             },
             {
                 id: 13,
                 title: "13) Acá hay una vocal",
                 code: `vocales = "aeiouáéíóú"\n\ndef mostrar_vocales(texto):\n    for letra in texto:\n        print(letra)\n        if letra.lower() in vocales:\n            print("Acá hay una vocal")\n\ndef main():\n    texto = input("Ingrese un texto: ")\n    mostrar_vocales(texto)\n\nmain()`,
-                console: "Ingrese un texto: hola\nh\no\nAcá hay una vocal\nl\na\nAcá hay una vocal"
+                console: "h\no\nAcá hay una vocal..."
             },
             {
                 id: 14,
                 title: "14) Letra elegida (V2)",
-                code: `def informar_letra_segun_posicion(frase, posicion):\n    if posicion < len(frase):\n        letra = frase[posicion]\n        tipo = "espacio" if letra == " " else f"letra {letra}"\n        print(f"En la posicion {posicion} hay {tipo}")\n    else:\n        print("Fuera de rango")\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    posicion = int(input("Ingrese una posicion: "))\n    informar_letra_segun_posicion(frase, posicion)\n\nmain()`,
-                console: "Ingrese una frase: python\nIngrese una posicion: 0\nEn la posicion 0 hay letra p"
+                code: `def informar_letra_segun_posicion(frase, posicion):\n    if posicion < len(frase):\n        letra = frase[posicion]\n        if letra == " ":\n            print(f"En la posicion {posicion} hay un espacio")\n        else:\n            print(f"En la posicion {posicion} hay una letra {letra}")\n    else:\n        print("Fuera de rango")\n\ndef main():\n    frase = input("Ingrese una frase: ")\n    posicion = int(input("Ingrese una posicion: "))\n    informar_letra_segun_posicion(frase, posicion)\n\nmain()`,
+                console: "En la posicion 0 hay letra p"
             },
             {
                 id: 15,
                 title: "15) Tenés que trabajar",
                 code: `def informar_segun_edad_y_genero(edad, genero):\n    if (edad < 18) or (edad >= 60 and genero == "F") or (edad >= 65 and genero == "M"):\n        print("Podés ir de viaje")\n    else:\n        print("Tenés que trabajar")\n\ndef main():\n    edad = int(input("Ingrese su edad: "))\n    genero = input("Ingrese su genero (M/F): ")\n    informar_segun_edad_y_genero(edad, genero)\n\nmain()`,
-                console: "Ingrese su edad: 60\nIngrese su genero: M\nTenés que trabajar"
+                console: "Tenés que trabajar"
             },
             {
                 id: 16,
                 title: "16) Mulero",
                 code: `def jugar_mulero(numero):\n    print(f"{numero + 1}, te gané")\n\ndef main():\n    n = int(input("Número (1-9): "))\n    jugar_mulero(n)\n\nmain()`,
-                console: "Número (1-9): 5\n6, te gané"
+                console: "6, te gané"
             },
             {
                 id: 17,
                 title: "17) Porciones de pizza",
                 code: `def calcular_sobrante(personas, pizzas):\n    return (pizzas * 8) % personas\n\ndef main():\n    per = int(input("Personas: "))\n    piz = int(input("Pizzas: "))\n    print(f"Sobran: {calcular_sobrante(per, piz)}")\n\nmain()`,
-                console: "Personas: 4\nPizzas: 8\nLa cantidad de porciones que sobran son: 0"
+                console: "Sobran: 0"
             },
             {
                 id: 18,
                 title: "18) Generador de apócopes",
                 code: `def generar_apocope(nombre):\n    if len(nombre) > 4:\n        print(f"Te voy a decir {nombre[:4]}")\n\ndef main():\n    nom = input("Nombre: ")\n    print(f"Hola {nom}")\n    generar_apocope(nom)\n\nmain()`,
-                console: "Nombre: Mariela\nHola Mariela\nTe voy a decir Mari"
+                console: "Te voy a decir Mari"
             },
             {
                 id: 19,
                 title: "19) Calentito (Dados)",
-                code: `import random\n\ndef jugar():\n    suma = 0\n    while suma < 20:\n        dado = random.randint(1, 6)\n        suma += dado\n        print(f"Salió {dado}, suma: {suma}")\n        if input("¿Seguir? (s/n): ") == "n": break\n    print(f"Final: {suma}")\n\ndef main():\n    jugar()\n\nmain()`,
-                console: "Salió el 4\nSuma actual: 4\n¿Querés seguir? (si/no): no\nGanaste"
+                code: `import random\n\ndef jugar():\n    suma = 0\n    while suma < 20:\n        dado = random.randint(1, 6)\n        suma += dado\n        print(f"Salió el {dado}")\n        print(f"Suma actual: {suma}")\n        if input("¿Querés seguir? (si/no): ") == "no": \n            break\n    if suma >= 20:\n        print("¡Ganaste!")\n\ndef main():\n    jugar()\n\nmain()`,
+                console: "Salió el 4\nSuma actual: 4\n¿Querés seguir? (si/no): no"
             },
             {
                 id: 20,
                 title: "20) Monedero Electrónico",
-                code: `def monedero():\n    saldo = 0\n    while True:\n        op = input("Opción (S, C, D, X): ").upper()\n        if op == "X": break\n        elif op == "C": saldo += int(input("Monto: "))\n        print(f"Saldo actual: {saldo}")\n\ndef main():\n    monedero()\n\nmain()`,
-                console: "Indique tipo de operación...\nC\nMonto: 400\nSaldo: $ 400"
+                code: `def monedero():\n    saldo = 0\n    while True:\n        print("Indique tipo de operación...")\n        print("C para CARGAR")\n        print("S para SALDO")\n        print("X para SALIR")\n        operacion = input("Opción: ").upper()\n        \n        if operacion == "X":\n            break\n        elif operacion == "C":\n            monto = int(input("Monto: "))\n            saldo = saldo + monto\n        elif operacion == "S":\n            print(f"Saldo: $ {saldo}")\n\ndef main():\n    monedero()\n\nmain()`,
+                console: "C\nMonto: 400\nSaldo: $ 400"
             },
             {
                 id: 21,
                 title: "21) Fortaleza de Contraseña",
-                code: `def verificar_fortaleza(psw):\n    if len(psw) >= 8 and any(c.isupper() for c in psw) and any(c.isdigit() for c in psw):\n        print("VERDE")\n    elif len(psw) < 5:\n        print("ROJA")\n    else: print("AMARILLA")\n\ndef main():\n    psw = input("Ingresar contraseña: ")\n    verificar_fortaleza(psw)\n\nmain()`,
-                console: "Ingresar contraseña: hola\ncontraseña roja"
+                code: `def verificar_si_hay_una_minuscula(contrasenia):\n    minusculas = "abcdefghijklmnopqrstuvwxyz"\n    hay_minuscula = False\n    for letra in range(len(contrasenia)):\n        if contrasenia[letra] in minusculas:\n            hay_minuscula = True\n    return hay_minuscula\n\ndef verificar_si_hay_una_mayuscula(contrasenia):\n    mayusculas = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"\n    hay_mayuscula = False\n    for letra in range(len(contrasenia)):\n        if contrasenia[letra] in mayusculas:\n            hay_mayuscula = True\n    return hay_mayuscula\n\ndef verificar_si_hay_un_numero(contrasenia):\n    numeros = "0123456789"\n    hay_numero = False\n    for letra in range(len(contrasenia)):\n        if contrasenia[letra] in numeros:\n            hay_numero = True\n    return hay_numero\n\ndef indicar_fortaleza_contrasenia(contrasenia):\n    if (len(contrasenia) >= 8) and verificar_si_hay_una_minuscula(contrasenia) \\\n                                and verificar_si_hay_una_mayuscula(contrasenia) \\\n                                and verificar_si_hay_un_numero(contrasenia):\n        print("Contraseña VERDE")\n    elif len(contrasenia) < 5:\n        print("Contraseña ROJA")\n    else:\n        print("Contraseña AMARILLA")\n\ndef main():\n    psw = input("Ingresar contraseña: ")\n    indicar_fortaleza_contrasenia(psw)\n\nmain()`,
+                console: "Ingresar contraseña: hola\nContraseña ROJA"
             }
         ];
 
@@ -225,7 +225,6 @@
                         </h2>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <!-- Editor Window -->
                             <div class="rounded-lg overflow-hidden border border-slate-700 bg-slate-900 shadow-lg">
                                 <div class="bg-slate-800 px-4 py-2 flex items-center justify-between border-b border-slate-700">
                                     <span class="text-xs font-bold text-slate-400 tracking-widest uppercase">Editor</span>
@@ -238,7 +237,6 @@
                                 </div>
                             </div>
 
-                            <!-- Console Window -->
                             <div class="rounded-lg overflow-hidden border border-slate-700 bg-black shadow-lg">
                                 <div class="bg-zinc-900 px-4 py-2 flex items-center justify-between border-b border-zinc-800">
                                     <span class="text-xs font-bold text-green-500 tracking-widest uppercase">Consola</span>
@@ -255,30 +253,14 @@
 
         function formatCode(code) {
             return code
-                // 1. Textos (strings) primero
+                // 1. Textos primero
                 .replace(/"(.*?)"/g, '<span class="string">"$1"</span>')
                 .replace(/'(.*?)'/g, '<span class="string">\'$1\'</span>')
                 
-                // 2. Palabras reservadas y funciones con límites de palabra
+                // 2. Palabras clave y funciones
                 .replace(/\b(def|if|else|elif|for|while|return|import|in|and|or|any|True|False|break)\b/g, '<span class="keyword">$1</span>')
                 .replace(/\b(print|input|int|len|range|randint|upper|lower)\b/g, '<span class="func">$1</span>');
         }
-
-        const container = document.getElementById('exerciseContainer');
-        const searchInput = document.getElementById('searchInput');
-
-        function renderExercises() {
-            container.innerHTML = exercises.map(ex => createExerciseCard(ex)).join('');
-        }
-
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
-            const cards = container.querySelectorAll('.exercise-card');
-            cards.forEach(card => {
-                const title = card.getAttribute('data-title');
-                card.style.display = title.includes(term) ? 'block' : 'none';
-            });
-        });
 
         function copyCode(id, btn) {
             const exercise = exercises.find(e => e.id === id);
@@ -300,6 +282,22 @@
                 document.body.removeChild(textArea);
             }
         }
+
+        const container = document.getElementById('exerciseContainer');
+        const searchInput = document.getElementById('searchInput');
+
+        function renderExercises() {
+            container.innerHTML = exercises.map(ex => createExerciseCard(ex)).join('');
+        }
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const cards = container.querySelectorAll('.exercise-card');
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                card.style.display = title.includes(term) ? 'block' : 'none';
+            });
+        });
 
         window.onload = renderExercises;
     </script>
