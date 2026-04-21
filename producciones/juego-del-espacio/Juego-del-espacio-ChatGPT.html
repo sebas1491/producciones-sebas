@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arcade Espacial</title>
+<style>
+/* =====================
+   RESET + BASE
+===================== */
+*{margin:0;padding:0;box-sizing:border-box;font-family:monospace}
+body{background:#000;overflow:hidden;color:#0ff}
+
+#game{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* =====================
+   STARFIELD (PARALLAX)
+===================== */
+.star{
+  position:absolute;
+  background:white;
+  border-radius:50%;
+}
+
+/* =====================
+   SHIP
+===================== */
+#ship{
+  position:absolute;
+  width:40px;
+  height:40px;
+  transform:translate(-50%,-50%);
+}
+
+.ship-body{
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-bottom:25px solid cyan;
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.thruster{
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  width:6px;
+  height:15px;
+  transform:translateX(-50%);
+  background:linear-gradient(orange,red,transparent);
+  animation:thrust 0.1s infinite alternate;
+}
+
+@keyframes thrust{
+  from{height:10px;opacity:0.6}
+  to{height:20px;opacity:1}
+}
+
+/* =====================
+   ASTEROIDS
+===================== */
+.asteroid{
+  position:absolute;
+  background:#555;
+  border-radius:40% 60% 50% 50%;
+}
+
+/* =====================
+   LASER
+===================== */
+.laser{
+  position:absolute;
+  width:3px;
+  height:12px;
+  background:linear-gradient(cyan,white);
+  box-shadow:0 0 10px cyan;
+}
+
+/* =====================
+   UI
+===================== */
+#ui{
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:10;
+}
+
+#cooldown{
+  width:100px;
+  height:8px;
+  border:1px solid cyan;
+}
+
+#cooldown-bar{
+  height:100%;
+  width:100%;
+  background:cyan;
+}
+
+#gameover{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  display:none;
+}
+
+button{
+  padding:10px;
+  margin-top:10px;
+  background:black;
+  color:cyan;
+  border:1px solid cyan;
+  cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="ship">
+    <div class="ship-body"></div>
+    <div class="thruster"></div>
+  </div>
+
+  <div id="ui">
+    <div>Score: <span id="score">0</span></div>
+    <div>Lives: <span id="lives">3</span></div>
+    <div>Cooldown</div>
+    <div id="cooldown"><div id="cooldown-bar"></div></div>
+    <div>Hyper: <span id="hyper">3</span></div>
+  </div>
+
+  <div id="gameover">
+    <h1>GAME OVER</h1>
+    <p id="finalScore"></p>
+    <button onclick="restart()">Reiniciar</button>
+  </div>
+</div>
+
+<script>
+/* =====================
+   VARIABLES
+===================== */
+const game = document.getElementById("game");
+const shipEl = document.getElementById("ship");
+
+let ship = {x:innerWidth/2, y:innerHeight/2, vx:0, vy:0};
+let keys = {};
+let asteroids = [];
+let lasers = [];
+let score = 0;
+let lives = 3;
+let cooldown = 0;
+let hyper = 3;
+let difficulty = 1;
+let running = true;
+
+/* =====================
+   INPUT
+===================== */
+addEventListener("keydown", e=>{
+  keys[e.key]=true;
+
+  if(e.key === " ") shoot();
+  if(e.key === "Shift") hyperJump();
+});
+addEventListener("keyup", e=> keys[e.key]=false);
+
+/* =====================
+   STARFIELD
+===================== */
+for(let i=0;i<100;i++){
+  let s=document.createElement("div");
+  s.className="star";
+  let size=Math.random()*2;
+  s.style.width=size+"px";
+  s.style.height=size+"px";
+  s.style.left=Math.random()*innerWidth+"px";
+  s.style.top=Math.random()*innerHeight+"px";
+  s.speed=size;
+  game.appendChild(s);
+}
+
+function updateStars(){
+  document.querySelectorAll(".star").forEach(s=>{
+    let y=parseFloat(s.style.top);
+    y+=s.speed;
+    if(y>innerHeight) y=0;
+    s.style.top=y+"px";
+  });
+}
+
+/* =====================
+   ASTEROIDS
+===================== */
+function spawnAsteroid(){
+  let el=document.createElement("div");
+  el.className="asteroid";
+  let size=20+Math.random()*40*difficulty;
+  el.style.width=size+"px";
+  el.style.height=size+"px";
+  let x=Math.random()*innerWidth;
+  el.style.left=x+"px";
+  el.style.top="-50px";
+  game.appendChild(el);
+
+  asteroids.push({el,x,y:-50,size,vx:(Math.random()-0.5)*2,vy:2+Math.random()*2});
+}
+
+/* =====================
+   SHOOT
+===================== */
+function shoot(){
+  if(cooldown>0) return;
+
+  let el=document.createElement("div");
+  el.className="laser";
+  game.appendChild(el);
+
+  lasers.push({el,x:ship.x,y:ship.y-20,vy:-8});
+  cooldown=20;
+}
+
+/* =====================
+   HYPERSPACE
+===================== */
+function hyperJump(){
+  if(hyper<=0) return;
+
+  hyper--;
+  ship.x=Math.random()*innerWidth;
+  ship.y=Math.random()*innerHeight;
+
+  if(Math.random()<0.2){
+    // fallo
+    lives--;
+  }
+}
+
+/* =====================
+   COLLISION
+===================== */
+function collide(a,b){
+  return Math.hypot(a.x-b.x,a.y-b.y)<(a.size/2+10);
+}
+
+/* =====================
+   GAME LOOP
+===================== */
+function loop(){
+  if(!running) return;
+
+  requestAnimationFrame(loop);
+
+  updateStars();
+
+  // movimiento nave
+  if(keys["ArrowUp"]) ship.vy-=0.2;
+  if(keys["ArrowDown"]) ship.vy+=0.2;
+  if(keys["ArrowLeft"]) ship.vx-=0.2;
+  if(keys["ArrowRight"]) ship.vx+=0.2;
+
+  ship.vx*=0.98;
+  ship.vy*=0.98;
+
+  ship.x+=ship.vx;
+  ship.y+=ship.vy;
+
+  shipEl.style.left=ship.x+"px";
+  shipEl.style.top=ship.y+"px";
+
+  // lasers
+  lasers.forEach((l,i)=>{
+    l.y+=l.vy;
+    l.el.style.left=l.x+"px";
+    l.el.style.top=l.y+"px";
+
+    if(l.y<0){ l.el.remove(); lasers.splice(i,1);} 
+  });
+
+  // asteroids
+  asteroids.forEach((a,i)=>{
+    a.x+=a.vx;
+    a.y+=a.vy;
+    a.el.style.left=a.x+"px";
+    a.el.style.top=a.y+"px";
+
+    if(a.y>innerHeight){
+      a.el.remove(); asteroids.splice(i,1);
+    }
+
+    // colision nave
+    if(collide(a,ship)){
+      a.el.remove(); asteroids.splice(i,1);
+      lives--;
+    }
+
+    // colision laser
+    lasers.forEach((l,li)=>{
+      if(collide(a,l)){
+        score+=Math.floor(a.size);
+        a.el.remove();
+        asteroids.splice(i,1);
+        l.el.remove();
+        lasers.splice(li,1);
+      }
+    });
+  });
+
+  // UI
+  document.getElementById("score").textContent=score;
+  document.getElementById("lives").textContent=lives;
+  document.getElementById("hyper").textContent=hyper;
+  document.getElementById("cooldown-bar").style.width=(cooldown*5)+"%";
+
+  if(cooldown>0) cooldown--;
+
+  // dificultad
+  if(Math.random()<0.02*difficulty) spawnAsteroid();
+  difficulty+=0.0005;
+
+  // game over
+  if(lives<=0){
+    running=false;
+    document.getElementById("gameover").style.display="block";
+    document.getElementById("finalScore").textContent="Score: "+score;
+  }
+}
+
+loop();
+
+function restart(){
+  location.reload();
+}
+</script>
+</body>
+</html>
