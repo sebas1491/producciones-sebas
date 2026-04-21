@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Métodos de Ordenamiento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        code, pre {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .complexity-tag {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            border-left: 2px solid var(--accent-color);
+            padding-left: 1rem;
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-slate-900 p-6 border-r border-slate-800 sticky top-0 h-auto md:h-screen overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <span class="text-sky-400">/</span>Ordenamiento
+                </h1>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Guía de Algoritmos</p>
+            </div>
+
+            <nav class="space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">O(n²) Cuadrático</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#bubble" class="nav-link block transition-all duration-200">Bubble Sort</a></li>
+                        <li><a href="#selection" class="nav-link block transition-all duration-200">Selection Sort</a></li>
+                        <li><a href="#insertion" class="nav-link block transition-all duration-200">Insertion Sort</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">O(n log n) Logarítmico</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#quick" class="nav-link block transition-all duration-200">Quick Sort</a></li>
+                        <li><a href="#merge" class="nav-link block transition-all duration-200">Merge Sort</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-12 max-w-5xl mx-auto w-full">
+            
+            <header class="mb-12 border-b border-slate-800 pb-8">
+                <h2 class="text-4xl font-extrabold mb-4">Métodos de Ordenamiento</h2>
+                <p class="text-slate-400 leading-relaxed max-w-2xl">
+                    Implementaciones en Python de los algoritmos clásicos de ordenamiento, divididos por su complejidad temporal.
+                </p>
+            </header>
+
+            <!-- Sección O(n^2) -->
+            <section class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <h3 class="text-2xl font-bold">Complejidad: O(n²) Cuadrático</h3>
+                    <span class="px-3 py-1 rounded-full text-xs complexity-tag font-bold uppercase">Lento / Datos Pequeños</span>
+                </div>
+
+                <!-- Bubble Sort -->
+                <article id="bubble" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-sky-400">Bubble Sort (Burbuja)</h4>
+                        <button onclick="copyCode('code-bubble')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                    </div>
+                    <pre><code id="code-bubble" class="language-python rounded-lg overflow-hidden">import random 
+
+lista = random.sample(range(1, 100), 10)
+
+def bubble_sort(lista):
+  i = 0
+  control = True
+  while i < len(lista)-2 and control:
+    control = False
+    for n in range(0, len(lista)-i-1):
+      if lista[n] > lista[n+1]:
+        lista[n], lista[n+1] = lista[n+1], lista[n]
+        control = True
+    i += 1
+  return lista
+
+print(bubble_sort(lista))</code></pre>
+                </article>
+
+                <!-- Selection Sort -->
+                <article id="selection" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-sky-400">Selection Sort (Selección)</h4>
+                        <button onclick="copyCode('code-selection')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                    </div>
+                    <pre><code id="code-selection" class="language-python rounded-lg overflow-hidden">import random 
+
+lista = random.sample(range(1, 100), 10)
+
+def selection_sort(lista):
+  for n in range(0, len(lista)-1):
+    minimo = n
+    for i in range (n+1, len(lista)):
+      if lista[i] < lista[minimo]:
+        minimo = i
+    lista[n], lista[minimo] = lista[minimo], lista[n]
+  return lista
+
+print(selection_sort(lista))</code></pre>
+                </article>
+
+                <!-- Insertion Sort -->
+                <article id="insertion" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-sky-400">Insertion Sort (Inserción)</h4>
+                        <button onclick="copyCode('code-insertion')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                    </div>
+                    <pre><code id="code-insertion" class="language-python rounded-lg overflow-hidden">import random 
+
+lista = random.sample(range(1, 100), 10)
+
+def insertion_sort(lista):  
+  for n in range(1, len(lista)):
+    value = lista[n]  
+    i = n - 1  
+    while i >= 0 and value < lista[i]:  
+        lista[i + 1] = lista[i]  
+        i -= 1  
+    lista[i + 1] = value 
+  return lista
+
+print(insertion_sort(lista))</code></pre>
+                </article>
+            </section>
+
+            <!-- Sección O(n log n) -->
+            <section class="mb-20">
+                <div class="flex items-center gap-4 mb-8">
+                    <h3 class="text-2xl font-bold">Complejidad: O(n log n) Logarítmico</h3>
+                    <span class="px-3 py-1 rounded-full text-xs bg-emerald-500/10 border border-emerald-500 text-emerald-500 font-bold uppercase">Eficiente / Datos Masivos</span>
+                </div>
+
+                <!-- Quick Sort -->
+                <article id="quick" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-sky-400">Quick Sort (Ordenamiento Rápido)</h4>
+                        <button onclick="copyCode('code-quick')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                    </div>
+                    <pre><code id="code-quick" class="language-python rounded-lg overflow-hidden">import random 
+
+lista = random.sample(range(1, 100), 10)
+
+def quicksort(lista, primero, ultimo):
+  izquierda = primero
+  derecha = ultimo-1
+  pivote = ultimo
+  while izquierda < derecha:
+    while lista[izquierda] < lista[pivote] and izquierda <= derecha:
+      izquierda += 1
+    while lista[derecha] > lista[pivote] and derecha >= izquierda:
+      derecha -= 1
+    if izquierda < derecha:
+      lista[izquierda], lista[derecha] = lista[derecha], lista[izquierda]
+  if lista[pivote] < lista[izquierda]:
+    lista[izquierda], lista[pivote] = lista[pivote], lista[izquierda]
+  if primero < izquierda:
+    quicksort(lista, primero, izquierda-1)
+  if ultimo > izquierda:
+    quicksort(lista, izquierda+1, ultimo)
+  return lista
+
+print(quicksort(lista, 0, len(lista)-1))</code></pre>
+                </article>
+
+                <!-- Merge Sort -->
+                <article id="merge" class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-xl font-bold text-sky-400">Merge Sort (Ordenamiento por Mezcla)</h4>
+                        <button onclick="copyCode('code-merge')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                    </div>
+                    <pre><code id="code-merge" class="language-python rounded-lg overflow-hidden">import random
+
+lista = random.sample(range(1, 100), 10)
+
+def mergesort(lista):
+    if len(lista) <= 1:
+        return lista
+    else:
+        medio = len(lista) // 2
+        izquierda = lista[:medio]
+        derecha = lista[medio:]
+        izquierda = mergesort(izquierda)
+        derecha = mergesort(derecha)
+        resultado = merge(izquierda, derecha)
+        return resultado
+
+def merge(izquierda, derecha):
+    lista_mezclada = []
+    while len(izquierda) > 0 and len(derecha) > 0:
+        if izquierda[0] < derecha[0]:
+            lista_mezclada.append(izquierda.pop(0))
+        else:
+            lista_mezclada.append(derecha.pop(0))
+    if len(izquierda) > 0:
+        lista_mezclada += izquierda
+    if len(derecha) > 0:
+        lista_mezclada += derecha
+    return lista_mezclada
+
+print(mergesort(lista))</code></pre>
+                </article>
+            </section>
+
+            <footer class="text-center text-slate-500 text-sm mt-16 pt-8 border-t border-slate-800">
+                <p>Guía de Algoritmos - Implementación en Python</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Inicializar resaltado de código
+        hljs.highlightAll();
+
+        // Función para copiar código al portapapeles
+        function copyCode(id) {
+            const code = document.getElementById(id).innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Feedback visual simple
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "¡Copiado!";
+            btn.style.color = "#10b981";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.color = "";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Funciones en Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #f1f5f9;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+        }
+
+        code, pre {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .complexity-tag {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .nav-link:hover {
+            color: var(--accent-color);
+            border-left: 2px solid var(--accent-color);
+            padding-left: 1rem;
+        }
+
+        .scroll-smooth {
+            scroll-behavior: smooth;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="scroll-smooth">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 bg-slate-900 p-6 border-r border-slate-800 sticky top-0 h-auto md:h-screen overflow-y-auto">
+            <div class="mb-8">
+                <h1 class="text-xl font-bold flex items-center gap-2">
+                    <span class="text-sky-400">/</span>Python Snippets
+                </h1>
+                <p class="text-xs text-slate-500 mt-1 uppercase tracking-widest font-semibold">Guía de Funciones</p>
+            </div>
+
+            <nav class="space-y-6">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">Números y Strings</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#num-varias" class="nav-link block transition-all duration-200">Funciones Varias</a></li>
+                        <li><a href="#num-random" class="nav-link block transition-all duration-200">Biblioteca Random</a></li>
+                        <li><a href="#num-math" class="nav-link block transition-all duration-200">Biblioteca Math</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-slate-500 uppercase mb-3">Listas y Arrays</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#list-main" class="nav-link block transition-all duration-200">Funciones Principales</a></li>
+                        <li><a href="#list-random" class="nav-link block transition-all duration-200">Biblioteca Random</a></li>
+                        <li><a href="#list-numpy" class="nav-link block transition-all duration-200">Biblioteca Numpy</a></li>
+                        <li><a href="#list-arrays" class="nav-link block transition-all duration-200">Arrays</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-12 max-w-5xl mx-auto w-full">
+            
+            <header class="mb-12 border-b border-slate-800 pb-8">
+                <h2 class="text-4xl font-extrabold mb-4">Manual de Funciones en Python</h2>
+                <p class="text-slate-400 leading-relaxed max-w-2xl">
+                  
+            </header>
+
+            <!-- ============================================== -->
+            <!-- SECCIÓN: FUNCIONES PARA NÚMEROS Y STRINGS      -->
+            <!-- ============================================== -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-extrabold mb-10 text-white border-l-4 border-sky-400 pl-4">Funciones para Números y Strings</h2>
+
+                <!-- Sub-sección: Funciones Varias -->
+                <section id="num-varias" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Funciones Varias</h3>
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Redondear un decimal</h4>
+                            <button onclick="copyCode('code-num-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-1" class="language-python rounded-lg overflow-hidden">numero = 3.141591
+
+round(numero, 2)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Elevar a la potencia</h4>
+                            <button onclick="copyCode('code-num-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-2" class="language-python rounded-lg overflow-hidden">resultado = pow(2, 3)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Convertir un Str en un Int o Float</h4>
+                            <button onclick="copyCode('code-num-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-3" class="language-python rounded-lg overflow-hidden">numero_str = "123"
+
+numero_int = int(numero_str)
+numero_float = float(numero_str)</code></pre>
+                    </article>
+                </section>
+
+                <!-- Sub-sección: Biblioteca Random (Números) -->
+                <section id="num-random" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Biblioteca Random</h3>
+                        
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Número aleatorio dentro de un rango</h4>
+                            <button onclick="copyCode('code-num-rand-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-rand-1" class="language-python rounded-lg overflow-hidden">from random import randint
+
+numero = randint(1, 10)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Números aleatorios con saltos</h4>
+                            <button onclick="copyCode('code-num-rand-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-rand-2" class="language-python rounded-lg overflow-hidden">import random
+
+pasos_a_saltar = 2
+
+for n in range(5):
+    numero_random = random.randrange(1, 11, pasos_a_saltar)
+
+"""
+Posibles: 1, 3, 5, 7, 9
+el ultimo numero (en este caso 11) no es posible que salga
+"""</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Número decimal aleatorio en el rango [0, 1]</h4>
+                            <button onclick="copyCode('code-num-rand-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-rand-3" class="language-python rounded-lg overflow-hidden">import random
+
+numero = random.random()</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Número decimal aleatorio dentro de un rango específico</h4>
+                            <button onclick="copyCode('code-num-rand-4')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-rand-4" class="language-python rounded-lg overflow-hidden">import random
+
+numero = random.uniform(1.0, 5.0)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Cadena de bytes aleatoria</h4>
+                            <button onclick="copyCode('code-num-rand-5')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-num-rand-5" class="language-python rounded-lg overflow-hidden">import random
+
+bytes_aleatorios = random.randbytes(5)</code></pre>
+                    </article>
+                </section>
+
+                <!-- Sub-sección: Biblioteca Math -->
+                <section id="num-math" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Biblioteca Math</h3>
+                        
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Calcular el Factorial</h4>
+                            <button onclick="copyCode('code-math-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-math-1" class="language-python rounded-lg overflow-hidden">import math
+
+numero = 5
+factorial = math.factorial(numero)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Calcular la raíz cuadrada</h4>
+                            <button onclick="copyCode('code-math-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-math-2" class="language-python rounded-lg overflow-hidden">import math
+
+numero = 16
+resultado = math.sqrt(numero)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Redondear un Decimal a un Entero</h4>
+                            <button onclick="copyCode('code-math-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-math-3" class="language-python rounded-lg overflow-hidden">import math
+
+decimal = 3.5
+
+entero_arriba = math.floor(decimal)
+entero_abajo = math.ceil(decimal)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Calcular el máximo común divisor</h4>
+                            <button onclick="copyCode('code-math-4')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-math-4" class="language-python rounded-lg overflow-hidden">import math
+
+numero_1 = 24
+numero_2 = 36
+
+resultado = math.gcd(numero_1, numero_2)</code></pre>
+                    </article>
+                </section>
+            </div>
+
+            <!-- ============================================== -->
+            <!-- SECCIÓN: FUNCIONES PARA LISTAS Y ARRAYS        -->
+            <!-- ============================================== -->
+            <div class="mb-20">
+                <h2 class="text-3xl font-extrabold mb-10 text-white border-l-4 border-sky-400 pl-4">Funciones para Listas y Arrays</h2>
+
+                <!-- Sub-sección: Funciones Principales (Listas) -->
+                <section id="list-main" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Funciones Principales</h3>
+                        
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Añadir elemento al final de la Lista</h4>
+                            <button onclick="copyCode('code-list-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-1" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 3]
+lista.append(4)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Añadir elemento en una posición de la Lista</h4>
+                            <button onclick="copyCode('code-list-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-2" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 4]
+posicion = 2
+elemento = 3
+
+lista.insert(posicion, elemento)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Añadir todos los elementos de una Lista a otra</h4>
+                            <button onclick="copyCode('code-list-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-3" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 3]
+lista_nueva = [4, 5, 6]
+
+lista.extend(lista_nueva)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Eliminar última posición de Lista</h4>
+                            <button onclick="copyCode('code-list-4')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-4" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 3, 4]
+lista.pop()</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Eliminar una posición específica de la Lista</h4>
+                            <button onclick="copyCode('code-list-5')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-5" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 3, 4]
+posicion = 2
+
+lista.pop(posicion)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Eliminar un elemento específico de la Lista</h4>
+                            <button onclick="copyCode('code-list-6')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-6" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 3, 4]
+
+lista.remove(3)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Eliminar todos los valores repetidos en una Lista</h4>
+                            <button onclick="copyCode('code-list-7')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-7" class="language-python rounded-lg overflow-hidden">lista = [1, 1, 1, 1, 3]
+
+lista = list(set(lista))</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Contar apariciones de elemento en Lista</h4>
+                            <button onclick="copyCode('code-list-8')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-8" class="language-python rounded-lg overflow-hidden">lista = [1, 2, 1, 3, 4]
+numero = 1
+
+lista.count(numero)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Ordenar elementos de menor a mayor y reverso</h4>
+                            <button onclick="copyCode('code-list-9')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-9" class="language-python rounded-lg overflow-hidden">lista = [1, 8, 3, 9, 5]
+
+menor_a_mayor = sorted(lista)
+mayor_a_menor = sorted(lista, reverse=True)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Sumar todos los elementos de una Lista</h4>
+                            <button onclick="copyCode('code-list-10')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-10" class="language-python rounded-lg overflow-hidden">lista = [1, 8, 3, 9, 5]
+
+lista_sumada = sum(lista)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Separar una oración de una Lista en palabras</h4>
+                            <button onclick="copyCode('code-list-11')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-11" class="language-python rounded-lg overflow-hidden">oracion = "Hola como estas todo bien"
+
+lista = oracion.split(" ")</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Concatenar elementos separados de una Lista</h4>
+                            <button onclick="copyCode('code-list-12')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-12" class="language-python rounded-lg overflow-hidden">lista = ["a", "b", "c"]
+separador = ""
+
+resultado = separador.join(lista)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Devolver el valor máximo y mínimo de una Lista</h4>
+                            <button onclick="copyCode('code-list-13')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-13" class="language-python rounded-lg overflow-hidden">lista = [34, 3, 28, 54, 6, 22, 8, 9]
+
+min(lista)
+max(lista)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Mostrar todas las Combinaciones posibles (Permutaciones)</h4>
+                            <button onclick="copyCode('code-list-14')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-14" class="language-python rounded-lg overflow-hidden">from itertools import permutations
+
+lista = [1, 2, 3]
+
+combinaciones = list(permutations(lista))
+
+for n in range(len(combinaciones)):
+    combinaciones[n]</code></pre>
+                    </article>
+                </section>
+
+                <!-- Sub-sección: Biblioteca Random (Listas) -->
+                <section id="list-random" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Biblioteca Random</h3>
+                        
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Elegir una cantidad dada de elementos aleatorios de una Lista</h4>
+                            <button onclick="copyCode('code-list-rand-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-rand-1" class="language-python rounded-lg overflow-hidden">import random
+
+lista = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+cantidad = 3
+
+elementos_aleatorios = random.sample(lista, cantidad)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Hacer random.sample sin tener una Lista</h4>
+                            <button onclick="copyCode('code-list-rand-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-rand-2" class="language-python rounded-lg overflow-hidden">import random
+
+cantidad_de_elementos = 15
+
+lista_numeros = random.sample(range(1, 1001), cantidad_de_elementos)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Elegir un elemento random de una Lista</h4>
+                            <button onclick="copyCode('code-list-rand-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-rand-3" class="language-python rounded-lg overflow-hidden">import random
+
+lista = [1, 2, 1, 3, 4]
+numero_random = random.choice(lista)</code></pre>
+                    </article>
+                </section>
+
+                <!-- Sub-sección: Biblioteca Numpy -->
+                <section id="list-numpy" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Biblioteca Numpy</h3>
+                  
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Sacar el promedio de una Lista</h4>
+                            <button onclick="copyCode('code-list-np-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-np-1" class="language-python rounded-lg overflow-hidden">import numpy as np
+
+lista = [1, 2, 3, 4, 5, 6]
+promedio = np.mean(lista)</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Mezclar elementos de Lista</h4>
+                            <button onclick="copyCode('code-list-np-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-list-np-2" class="language-python rounded-lg overflow-hidden">import numpy as np
+
+lista = [1, 2, 3, 4, 5, 6]
+
+np.random.shuffle(lista)</code></pre>
+                    </article>
+                </section>
+
+                <!-- Sub-sección: Arrays -->
+                <section id="list-arrays" class="mb-16">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="text-2xl font-bold">Arrays</h3>
+                       
+                    </div>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Crear Arrays con biblioteca array</h4>
+                            <button onclick="copyCode('code-arr-1')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-arr-1" class="language-python rounded-lg overflow-hidden">import array
+
+# Array de enteros
+array_enteros = array.array('i', [1, 2, 3, 4, 5])
+
+# Array de caracteres
+array_caracteres = array.array('u', ['a', 'b', 'c', 'd', 'e'])</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Crear Arrays con biblioteca numpy</h4>
+                            <button onclick="copyCode('code-arr-2')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-arr-2" class="language-python rounded-lg overflow-hidden">import numpy as np
+
+# Array de enteros
+array_enteros = np.array([1, 2, 3, 4, 5])
+
+# Array de caracteres
+array_caracteres = np.array(['a', 'b', 'c', 'd', 'e'])</code></pre>
+                    </article>
+
+                    <article class="bg-slate-800/50 border border-slate-700 rounded-xl p-6 mb-8 hover:bg-slate-800 transition-colors">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-xl font-bold text-sky-400">Array de booleanos a partir de (0 y 1)</h4>
+                            <button onclick="copyCode('code-arr-3')" class="text-xs text-slate-400 hover:text-white uppercase font-bold tracking-tighter transition-colors">Copiar</button>
+                        </div>
+                        <pre><code id="code-arr-3" class="language-python rounded-lg overflow-hidden">import numpy as np
+
+array_booleanos = np.array([0, 1, 1, 0], dtype=bool)</code></pre>
+                    </article>
+                </section>
+            </div>
+
+            <footer class="text-center text-slate-500 text-sm mt-16 pt-8 border-t border-slate-800">
+                <p>Guía de Funciones Base - Implementaciones en Python</p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Inicializar resaltado de código
+        hljs.highlightAll();
+
+        // Función para copiar código al portapapeles
+        function copyCode(id) {
+            const code = document.getElementById(id).innerText;
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Feedback visual simple
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "¡Copiado!";
+            btn.style.color = "#10b981";
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.color = "";
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
