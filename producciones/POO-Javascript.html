@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POO Master - Entorno Interactivo</title>
+    <style>
+        :root {
+            --bg-dark: #050a0f;
+            --panel-bg: #0d1621;
+            --accent-blue: #0088ff;
+            --accent-hover: #00b3ff;
+            --text-main: #e0e6ed;
+            --text-dim: #94a3b8;
+            --border-color: #1e293b;
+            --error-red: #ff4d4d;
+            --success-green: #2ecc71;
+            --resizer-width: 6px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 20;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            padding: 1rem;
+            gap: 1rem;
+            min-width: 200px;
+        }
+
+        .left {
+            width: 40%; 
+        }
+
+        .right {
+            flex: 1; 
+            background-color: rgba(0,0,0,0.2);
+            overflow-y: auto;
+        }
+
+        .resizer {
+            width: var(--resizer-width);
+            cursor: col-resize;
+            background-color: transparent;
+            transition: background-color 0.2s;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resizer:hover, .resizer.dragging {
+            background-color: var(--accent-blue);
+        }
+
+        .resizer::after {
+            content: "";
+            width: 2px;
+            height: 30px;
+            background-color: var(--border-color);
+            border-radius: 2px;
+        }
+
+        .panel {
+            background-color: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 10px 15px;
+            background-color: rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .editor-wrapper {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            background: #090e14;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Contenedor de números de línea */
+        .line-numbers {
+            width: 40px;
+            padding: 15px 5px;
+            text-align: right;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #4b5563;
+            background: #0d1117;
+            border-right: 1px solid var(--border-color);
+            user-select: none;
+            overflow: hidden;
+        }
+
+        .editor-content-area {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        #code-editor, #highlighting {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            margin: 0; padding: 15px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            white-space: pre; 
+            word-wrap: normal;
+            tab-size: 2;
+            border: none;
+            outline: none;
+            overflow: auto;
+        }
+
+        #code-editor {
+            color: transparent;
+            background: transparent;
+            caret-color: #ffffff;
+            z-index: 2;
+            resize: none;
+        }
+
+        #highlighting {
+            z-index: 1;
+            pointer-events: none;
+            color: #abb2bf;
+            overflow: hidden;
+        }
+
+        .syn-keyword { color: #c678dd; font-weight: bold; }
+        .syn-declare { color: #56b6c2; font-style: italic; }
+        .syn-string { color: #98c379; }
+        .syn-function { color: #61afef; }
+        .syn-number { color: #d19a66; }
+        .syn-comment { color: #5c6370; font-style: italic; }
+        .syn-this { color: #e5c07b; }
+
+        .console-area {
+            height: 200px;
+            min-height: 150px;
+        }
+
+        #console-output {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            background: #020408;
+            color: #10b981;
+        }
+
+        .console-line {
+            margin-bottom: 4px;
+            border-left: 2px solid transparent;
+            padding-left: 8px;
+            word-break: break-all;
+        }
+
+        .console-line.error { color: var(--error-red); border-left-color: var(--error-red); }
+        .console-line.info { color: var(--accent-blue); }
+
+        .console-input-group {
+            display: flex;
+            padding: 10px;
+            background: #090e14;
+            gap: 10px;
+        }
+
+        #command-line {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: white;
+            padding: 8px 12px;
+            font-family: monospace;
+            outline: none;
+        }
+
+        #command-line:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .btn-run {
+            background: var(--success-green);
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-clear {
+            background: rgba(255, 77, 77, 0.1);
+            color: var(--error-red);
+            border: 1px solid var(--error-red);
+            padding: 2px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .btn-clear:hover {
+            background: var(--error-red);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: none; 
+            border: 1px solid var(--accent-blue); 
+            color: var(--accent-blue); 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 10px;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 136, 255, 0.1);
+        }
+
+        .visualizer-area {
+            flex: 1;
+            padding: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.2rem;
+            align-content: start;
+        }
+
+        .object-card {
+            background: #111d2b;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 15px;
+            animation: fadeIn 0.3s ease-out;
+            height: fit-content;
+        }
+
+        .object-title {
+            font-size: 1.1rem;
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .object-class-tag {
+            font-size: 0.65rem;
+            background: rgba(0, 136, 255, 0.15);
+            color: var(--accent-blue);
+            padding: 2px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+
+        .props-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .props-table th, .props-table td {
+            text-align: left;
+            padding: 8px 4px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .props-table th {
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .val-obj-ref {
+            color: #f59e0b;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .method-tag {
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            font-family: monospace;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .empty-msg {
+            grid-column: 1 / -1;
+            color: var(--text-dim);
+            text-align: center;
+            margin-top: 3rem;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-blue); }
+
+        .no-select {
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+            Progra. Orientada a Objetos con Javascript.
+        </div>
+        <button id="btn-clear-all" class="btn-clear">LIMPIAR TODO</button>
+    </header>
+
+    <main id="main-container">
+        <div class="column left" id="left-panel">
+            <div class="panel" style="height: 100%;">
+                <div class="panel-header">
+                    Editor
+                    <div class="panel-header-actions">
+                        <button id="btn-open-file" class="btn-secondary">Abrir</button>
+                        <button id="btn-save-file" class="btn-secondary">Guardar</button>
+                        <button id="btn-sync-classes" class="btn-secondary">Actualizar clases</button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <div id="line-numbers" class="line-numbers">1</div>
+                    <div class="editor-content-area">
+                        <textarea id="code-editor" spellcheck="false"></textarea>
+                        <pre id="highlighting" aria-hidden="true"><code id="highlighting-content"></code></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="resizer" id="drag-bar"></div>
+
+        <div class="column right" id="right-panel">
+            <div class="panel console-area">
+                <div class="panel-header">Consola</div>
+                <div id="console-output"></div>
+                <div class="console-input-group">
+                    <input type="text" id="command-line" placeholder="Crea tus objetos aqui..." spellcheck="false">
+                    <button class="btn-run" id="btn-execute">Ejecutar</button>
+                </div>
+            </div>
+
+            <div class="panel" style="flex: 1; overflow-y: auto;">
+                <div class="panel-header">TABLAS</div>
+                <div id="visualizer-container" class="visualizer-area">
+                    <div class="empty-msg">No hay objetos instanciados.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Input oculto para abrir archivos -->
+    <input type="file" id="file-input" style="display: none;" accept=".js,.txt,.html">
+
+    <script>
+        const editor = document.getElementById('code-editor');
+        const highlightingContent = document.getElementById('highlighting-content');
+        const highlighting = document.getElementById('highlighting');
+        const lineNumbers = document.getElementById('line-numbers');
+        const consoleOutput = document.getElementById('console-output');
+        const commandLine = document.getElementById('command-line');
+        const btnExecute = document.getElementById('btn-execute');
+        const btnSync = document.getElementById('btn-sync-classes');
+        const btnClearAll = document.getElementById('btn-clear-all');
+        const btnOpenFile = document.getElementById('btn-open-file');
+        const btnSaveFile = document.getElementById('btn-save-file');
+        const fileInput = document.getElementById('file-input');
+        const visualizerContainer = document.getElementById('visualizer-container');
+
+        const leftPanel = document.getElementById('left-panel');
+        const rightPanel = document.getElementById('right-panel');
+        const dragBar = document.getElementById('drag-bar');
+        const mainContainer = document.getElementById('main-container');
+
+        let consoleObjects = new Set();
+
+        // --- RESIZER ---
+        let isDragging = false;
+        dragBar.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            dragBar.classList.add('dragging');
+            document.body.classList.add('no-select');
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            let percentage = (e.clientX / mainContainer.offsetWidth) * 100;
+            if (percentage < 15) percentage = 15;
+            if (percentage > 85) percentage = 85;
+            leftPanel.style.width = `${percentage}%`;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            dragBar.classList.remove('dragging');
+            document.body.classList.remove('no-select');
+        });
+
+        // --- SINTAXIS Y LINEAS ---
+        function updateLineNumbers() {
+            const lines = editor.value.split('\n');
+            const numbers = lines.map((_, i) => i + 1).join('<br>');
+            lineNumbers.innerHTML = numbers;
+        }
+
+        function applyHighlights(text) {
+            let safeText = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const regex = /(\/\*[\s\S]*?\*\/|\/\/.*)|((['"`])(?:(?!\3)[^\\]|\\.)*\3)|\b(const|let|var)\b|\b(class|constructor|return|if|else|for|while|new|true|false|null|undefined)\b|\b(this)\b|\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*(?=\()|\b(\d+(?:\.\d+)?)\b/g;
+            return safeText.replace(regex, (match, comment, string, _, declare, keyword, isThis, func, number) => {
+                if (comment) return `<span class="syn-comment">${comment}</span>`;
+                if (string) return `<span class="syn-string">${string}</span>`;
+                if (declare) return `<span class="syn-declare">${declare}</span>`;
+                if (keyword) return `<span class="syn-keyword">${keyword}</span>`;
+                if (isThis) return `<span class="syn-this">${isThis}</span>`;
+                if (func) return `<span class="syn-function">${func}</span>`;
+                if (number) return `<span class="syn-number">${number}</span>`;
+                return match;
+            });
+        }
+
+        function updateHighlighting() {
+            highlightingContent.innerHTML = applyHighlights(editor.value) + "\n\n";
+            updateLineNumbers();
+        }
+
+        editor.oninput = updateHighlighting;
+        editor.onscroll = () => {
+            highlighting.scrollTop = editor.scrollTop;
+            highlighting.scrollLeft = editor.scrollLeft;
+            lineNumbers.scrollTop = editor.scrollTop;
+        };
+
+        editor.onkeydown = function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                let start = this.selectionStart;
+                this.value = this.value.substring(0, start) + "  " + this.value.substring(this.selectionEnd);
+                this.selectionStart = this.selectionEnd = start + 2;
+                updateHighlighting();
+            }
+        };
+
+        // --- FILE HANDLING ---
+        btnOpenFile.onclick = () => fileInput.click();
+
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                editor.value = event.target.result;
+                updateHighlighting();
+                updateClasses();
+            };
+            reader.readAsText(file);
+            fileInput.value = '';
+        };
+
+        btnSaveFile.onclick = async () => {
+            try {
+                if ('showSaveFilePicker' in window) {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: 'mi_codigo_poo.js',
+                        types: [{
+                            description: 'JavaScript Files',
+                            accept: {'text/javascript': ['.js']},
+                        }],
+                    });
+                    const writable = await handle.createWritable();
+                    await writable.write(editor.value);
+                    await writable.close();
+                    console.log("Archivo guardado exitosamente.");
+                } else {
+                    const blob = new Blob([editor.value], { type: 'text/javascript' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'mi_codigo_poo.js';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    console.log("Descargando archivo.");
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    showError("Error al guardar: " + err.message);
+                }
+            }
+        };
+
+        // --- CORE LOGIC ---
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            const line = document.createElement('div');
+            line.className = 'console-line';
+            line.textContent = '> ' + args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ');
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        };
+
+        const showError = (err) => {
+            const line = document.createElement('div');
+            line.className = 'console-line error';
+            line.textContent = '[Error]: ' + err;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        function updateClasses() {
+            try {
+                const code = editor.value;
+                const prepared = code.replace(/class\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 'window.$1 = class');
+                window.eval(prepared);
+                console.log("Clases actualizadas correctamente.");
+            } catch (e) {
+                showError("Error en clases: " + e.message);
+            }
+        }
+
+        function runConsoleCommand(cmd) {
+            try {
+                const varMatches = cmd.match(/(?:const|let|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=/);
+                let foundName = varMatches ? varMatches[1] : null;
+
+                let prepared = cmd
+                    .replace(/const\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 'window.$1')
+                    .replace(/let\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 'window.$1')
+                    .replace(/var\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g, 'window.$1');
+
+                window.eval(prepared);
+                if (foundName) consoleObjects.add(foundName);
+                updateVisualizer();
+            } catch (e) {
+                showError(e.message);
+            }
+        }
+
+        function findVariableNameByRef(targetObj) {
+            for (let name of consoleObjects) {
+                if (window[name] === targetObj) return name;
+            }
+            return null;
+        }
+
+        function updateVisualizer() {
+            visualizerContainer.innerHTML = '';
+            let foundAny = false;
+
+            Array.from(consoleObjects).forEach(name => {
+                try {
+                    const val = window[name];
+                    if (val && typeof val === 'object' && val !== window && !Array.isArray(val) && typeof val !== 'function') {
+                        foundAny = true;
+                        visualizerContainer.appendChild(createObjectCard(name, val));
+                    }
+                } catch(e) {}
+            });
+
+            if (!foundAny) {
+                visualizerContainer.innerHTML = '<div class="empty-msg">No hay objetos instanciados.</div>';
+            }
+        }
+
+        function createObjectCard(name, obj) {
+            const card = document.createElement('div');
+            card.className = 'object-card';
+            let className = obj.constructor ? obj.constructor.name : 'Object';
+            
+            let html = `
+                <div class="object-title">
+                    <span>${name}</span>
+                    <span class="object-class-tag">${className}</span>
+                </div>
+                <table class="props-table">
+                    <thead><tr><th>Atributo</th><th>Valor</th></tr></thead>
+                    <tbody>
+            `;
+
+            const allKeys = Object.getOwnPropertyNames(obj);
+            const methods = [];
+            const props = [];
+            let proto = Object.getPrototypeOf(obj);
+            let protoKeys = proto && proto !== Object.prototype ? Object.getOwnPropertyNames(proto) : [];
+            const uniqueKeys = [...new Set([...allKeys, ...protoKeys])];
+
+            uniqueKeys.forEach(key => {
+                if (key === 'constructor') return;
+                try {
+                    const val = obj[key];
+                    if (typeof val === 'function') methods.push(key);
+                    else props.push({key, val});
+                } catch(e) {}
+            });
+
+            props.forEach(p => {
+                let displayVal = p.val;
+                let valClass = '';
+
+                if (p.val && typeof p.val === 'object') {
+                    const refName = findVariableNameByRef(p.val);
+                    const type = p.val.constructor ? p.val.constructor.name : 'Object';
+                    
+                    if (refName) {
+                        displayVal = `➜ ${refName} (${type})`;
+                    } else {
+                        displayVal = `Ref: ${type}`;
+                    }
+                    valClass = 'val-obj-ref';
+                } else if (typeof p.val === 'string') {
+                    displayVal = `"${p.val}"`;
+                } else {
+                    displayVal = String(p.val);
+                }
+
+                html += `<tr><td>${p.key}</td><td class="${valClass}">${displayVal}</td></tr>`;
+            });
+
+            html += `</tbody></table>`;
+            if (methods.length > 0) {
+                html += `<div style="margin-top:12px; font-size: 0.7rem; color: var(--text-dim); margin-bottom:4px; font-weight: bold; opacity: 0.7;">MÉTODOS:</div>`;
+                methods.forEach(m => { html += `<span class="method-tag">${m}()</span>`; });
+            }
+            card.innerHTML = html;
+            return card;
+        }
+
+        btnExecute.onclick = () => {
+            const cmd = commandLine.value.trim();
+            if (cmd) {
+                console.log(cmd);
+                runConsoleCommand(cmd);
+                commandLine.value = '';
+            }
+        };
+
+        btnClearAll.onclick = () => {
+            consoleObjects.forEach(name => {
+                delete window[name];
+            });
+            consoleObjects.clear();
+            consoleOutput.innerHTML = '';
+            updateVisualizer();
+            console.log("Entorno limpiado.");
+        };
+
+        btnSync.onclick = updateClasses;
+        commandLine.onkeypress = (e) => { if (e.key === 'Enter') btnExecute.click(); };
+
+        window.onload = () => {
+            updateHighlighting();
+            updateClasses();
+            updateVisualizer();
+        };
+    </script>
+</body>
+</html>
