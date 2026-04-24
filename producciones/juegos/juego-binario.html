@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Quest - Aprende Binario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=JetBrains+Mono:wght@700&display=swap');
+
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #6366f1; /* Indigo */
+            --accent: #10b981;  /* Emerald */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            touch-action: manipulation;
+            overflow: hidden; /* Evita el scroll global */
+        }
+
+        .binary-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bit-card {
+            background: var(--card-bg);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .bit-card.active {
+            background: var(--primary);
+            border-color: #818cf8;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 15px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .bit-card:not(.active):hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: #2d3a4f;
+        }
+
+        @keyframes target-pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(99, 102, 241, 0)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(99, 102, 241, 0)); }
+        }
+
+        .target-animate {
+            animation: target-pulse 3s infinite ease-in-out;
+            color: var(--primary);
+        }
+
+        .success-flash {
+            animation: flash 0.5s ease-out;
+        }
+
+        @keyframes flash {
+            0% { background: var(--bg-color); }
+            50% { background: #064e3b; }
+            100% { background: var(--bg-color); }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Cabecera Compacta -->
+    <header class="p-4">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-extrabold tracking-tighter text-white">BINARY<span class="text-indigo-400">QUEST</span></h1>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="glass-panel px-4 py-1.5 rounded-xl flex items-center space-x-2">
+                    <span class="text-indigo-300 text-[10px] font-black uppercase tracking-widest">Puntos</span>
+                    <span id="score-display" class="text-lg font-black text-white">0</span>
+                </div>
+                <button onclick="toggleInfo()" class="w-8 h-8 rounded-full glass-panel flex items-center justify-center hover:bg-indigo-500/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-5xl mx-auto w-full px-4 pb-4 flex flex-col items-center justify-center">
+        
+        <!-- Tarjeta Principal Compacta -->
+        <div id="game-card" class="w-full glass-panel rounded-[2rem] p-6 md:p-8 text-center relative overflow-hidden flex flex-col justify-between">
+            
+            <div id="challenge-container" class="mb-6 relative z-10">
+                <p class="text-indigo-300/60 uppercase tracking-[0.2em] text-[10px] font-bold mb-1">Objetivo Decimal</p>
+                <div id="target-number" class="text-6xl md:text-7xl font-black target-animate leading-tight">0</div>
+            </div>
+
+            <!-- Interfaz de Bits Redimensionada -->
+            <div class="grid grid-cols-4 md:grid-cols-8 gap-3 mb-8" id="bits-grid">
+                <!-- JavaScript rinde aquí -->
+            </div>
+
+            <!-- Barra de Control Inferior Compacta -->
+            <div class="flex items-center justify-between bg-slate-900/50 border border-white/5 p-4 md:p-6 rounded-[1.5rem] gap-4">
+                <div class="text-left">
+                    <p class="text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-0.5">Suma Actual</p>
+                    <div id="current-value" class="text-3xl md:text-4xl font-black text-white">0</div>
+                </div>
+                
+                <div class="flex space-x-2">
+                    <button id="check-btn" onclick="checkAnswer()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-xl font-extrabold shadow-lg shadow-indigo-600/20 transition-all active:scale-95 text-sm uppercase tracking-wider">
+                        Validar
+                    </button>
+                    <button id="reset-btn" onclick="resetGame()" class="bg-slate-800 hover:bg-slate-700 text-slate-400 px-4 py-3 rounded-xl font-bold transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Ayuda -->
+        <div id="info-overlay" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-6">
+            <div class="glass-panel rounded-[2rem] max-w-md w-full p-8 border-indigo-500/20 shadow-2xl">
+                <h2 class="text-2xl font-black mb-4 text-white">Cómo jugar</h2>
+                <div class="space-y-4 mb-6">
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-indigo-500/20 text-indigo-400 rounded-xl h-10 w-10 flex items-center justify-center shrink-0 font-black text-lg">1</div>
+                        <p class="text-slate-300 text-sm">Observa el <span class="text-indigo-400 font-bold">número objetivo</span>.</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-indigo-500/20 text-indigo-400 rounded-xl h-10 w-10 flex items-center justify-center shrink-0 font-black text-lg">2</div>
+                        <p class="text-slate-300 text-sm">Activa bits. Cada uno <span class="text-indigo-400 font-bold text-base underline">vale el doble</span> que el anterior.</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-indigo-500/20 text-indigo-400 rounded-xl h-10 w-10 flex items-center justify-center shrink-0 font-black text-lg">3</div>
+                        <p class="text-slate-300 text-sm">Presiona <span class="text-emerald-400 font-bold">Validar</span> cuando la suma sea igual.</p>
+                    </div>
+                </div>
+                <button onclick="toggleInfo()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-black py-4 rounded-xl transition-all">¡ENTENDIDO!</button>
+            </div>
+        </div>
+
+        <!-- Feedback de Acierto -->
+        <div id="feedback" class="fixed bottom-8 transform translate-y-32 opacity-0 transition-all duration-700 pointer-events-none z-50">
+            <div class="bg-emerald-500 text-white px-8 py-3 rounded-full font-black shadow-lg flex items-center text-base">
+                ¡MAGNÍFICO! +10 Puntos
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="p-4 text-center text-slate-500 text-[9px] font-bold tracking-widest uppercase">
+        &copy; 2024 BINARY QUEST &bull; Edición Educativa
+    </footer>
+
+    <script>
+        let bits = [0, 0, 0, 0, 0, 0, 0, 0];
+        let targetValue = 0;
+        let score = 0;
+        const values = [128, 64, 32, 16, 8, 4, 2, 1];
+
+        const bitsGrid = document.getElementById('bits-grid');
+        const targetDisplay = document.getElementById('target-number');
+        const currentDisplay = document.getElementById('current-value');
+        const scoreDisplay = document.getElementById('score-display');
+        const feedback = document.getElementById('feedback');
+
+        function init() {
+            renderBits();
+            generateNewChallenge();
+            updateScore();
+        }
+
+        function renderBits() {
+            bitsGrid.innerHTML = '';
+            bits.forEach((bit, index) => {
+                const bitCard = document.createElement('div');
+                bitCard.className = `bit-card p-4 md:p-6 rounded-2xl flex flex-col items-center cursor-pointer select-none ${bit === 1 ? 'active' : ''}`;
+                bitCard.onclick = () => toggleBit(index);
+
+                bitCard.innerHTML = `
+                    <span class="text-sm md:text-lg font-black ${bit === 1 ? 'text-white' : 'text-indigo-400'} mb-2 tracking-tight">${values[index]}</span>
+                    <span class="binary-font text-3xl md:text-4xl font-bold">${bit}</span>
+                `;
+                bitsGrid.appendChild(bitCard);
+            });
+            calculateCurrent();
+        }
+
+        function toggleBit(index) {
+            bits[index] = bits[index] === 0 ? 1 : 0;
+            renderBits();
+            if (window.navigator.vibrate) window.navigator.vibrate(20);
+        }
+
+        function calculateCurrent() {
+            let sum = 0;
+            bits.forEach((bit, index) => {
+                if (bit === 1) sum += values[index];
+            });
+            currentDisplay.innerText = sum;
+            
+            if (sum === targetValue) {
+                currentDisplay.style.color = '#10b981';
+            } else if (sum > targetValue) {
+                currentDisplay.style.color = '#ef4444';
+            } else {
+                currentDisplay.style.color = 'white';
+            }
+            return sum;
+        }
+
+        function generateNewChallenge() {
+            targetValue = Math.floor(Math.random() * 254) + 1;
+            targetDisplay.innerText = targetValue;
+            bits = [0, 0, 0, 0, 0, 0, 0, 0];
+            renderBits();
+        }
+
+        function checkAnswer() {
+            const current = calculateCurrent();
+            if (current === targetValue) {
+                score += 10;
+                document.body.classList.add('success-flash');
+                setTimeout(() => document.body.classList.remove('success-flash'), 500);
+                
+                showFeedback();
+                updateScore();
+                setTimeout(generateNewChallenge, 800);
+            } else {
+                const card = document.getElementById('game-card');
+                card.style.borderColor = 'rgba(239, 68, 68, 0.5)';
+                setTimeout(() => card.style.borderColor = 'rgba(255, 255, 255, 0.1)', 600);
+                
+                card.animate([
+                    { transform: 'translateX(0px)' },
+                    { transform: 'translateX(-5px)' },
+                    { transform: 'translateX(5px)' },
+                    { transform: 'translateX(0px)' }
+                ], { duration: 200, iterations: 2 });
+            }
+        }
+
+        function showFeedback() {
+            feedback.style.transform = 'translateY(-20px)';
+            feedback.style.opacity = '1';
+            setTimeout(() => {
+                feedback.style.transform = 'translateY(50px)';
+                feedback.style.opacity = '0';
+            }, 1800);
+        }
+
+        function updateScore() {
+            scoreDisplay.innerText = score;
+        }
+
+        function resetGame() {
+            score = 0;
+            updateScore();
+            generateNewChallenge();
+        }
+
+        function toggleInfo() {
+            const overlay = document.getElementById('info-overlay');
+            overlay.classList.toggle('hidden');
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
