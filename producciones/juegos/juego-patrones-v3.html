@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de Patrones</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --secondary: #1e90ff;
+            --accent: #ffa502;
+            --bg: #2f3542; 
+            --circle-clr: #ff9f43;
+            --square-clr: #54a0ff;
+            --rect-clr: #5f27cd;
+            --text: #ffffff;
+            --card-bg: #3e4451;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: radial-gradient(rgba(255,255,255,0.05) 2px, transparent 2px);
+            background-size: 30px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: var(--text);
+            padding: 10px;
+            overflow: hidden; /* Evita el scroll */
+        }
+
+        .container {
+            text-align: center;
+            background: var(--card-bg);
+            padding: 20px 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            border: 3px solid rgba(255,255,255,0.1);
+        }
+
+        h1 {
+            color: var(--accent);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+
+        .difficulty-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .diff-btn {
+            padding: 15px 10px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+        }
+
+        .diff-btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
+        .diff-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0,0,0,0.2); }
+
+        .diff-easy { background: #2ed573; box-shadow: 0 6px 0 #26af5c; }
+        .diff-medium { background: #eccc68; box-shadow: 0 6px 0 #d4b55c; }
+        .diff-hard { background: #ff7f50; box-shadow: 0 6px 0 #e6673d; }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .lives-container {
+            color: #ff4757;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+        }
+
+        /* Figuras ajustadas para evitar scroll */
+        .shape {
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .shape.circle {
+            width: 65px;
+            height: 65px;
+            background-color: var(--circle-clr);
+            border-radius: 50%;
+        }
+
+        .shape.square {
+            width: 65px;
+            height: 65px;
+            background-color: var(--square-clr);
+            border-radius: 10px;
+        }
+
+        .shape.rect {
+            width: 90px;
+            height: 50px;
+            background-color: var(--rect-clr);
+            border-radius: 10px;
+        }
+
+        .pattern-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            min-height: 120px;
+            background: rgba(255,255,255,0.05);
+            border: 3px dashed rgba(255,255,255,0.2);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+
+        .missing-slot {
+            width: 65px;
+            height: 65px;
+            border: 4px dashed #ffa502;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #ffa502;
+            background: rgba(255,165,2,0.1);
+        }
+
+        .options-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            background: #ffffff;
+            border: 4px solid transparent;
+            padding: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .option-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+
+        .btn-main {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.3rem;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b33939;
+            transition: all 0.2s;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .btn-main:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #b33939;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .message { font-size: 3.5rem; margin-bottom: 20px; font-weight: bold; }
+        .win { color: #2ed573; }
+        .lose { color: #ff4757; }
+
+        .level-indicator {
+            font-size: 1.4rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #game-screen { display: none; }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        p.instruction {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #a4b0be;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="mainContainer">
+        <!-- Menú Principal -->
+        <div id="start-screen">
+            <h1>Juego de Patrones</h1>
+            <p class="instruction">¡Completa la secuencia lógica!</p>
+            
+            <div class="difficulty-menu">
+                <button class="diff-btn diff-easy" onclick="initGame('easy')">FÁCIL<br><small style="font-size: 0.9rem;">Secuencias A-B</small></button>
+                <button class="diff-btn diff-medium" onclick="initGame('medium')">MEDIO<br><small style="font-size: 0.9rem;">Secuencias A-B-C</small></button>
+                <button class="diff-btn diff-hard" onclick="initGame('hard')">DIFÍCIL<br><small style="font-size: 0.9rem;">Secuencias Mixtas</small></button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Juego -->
+        <div id="game-screen">
+            <div class="level-indicator" id="level-text">Nivel 1</div>
+            <div class="game-info">
+                <div>⌛ <span id="timer">30</span>s</div>
+                <div class="lives-container" id="lives-display">❤️❤️❤️</div>
+                <div id="mode-text">Fácil</div>
+            </div>
+
+            <div class="pattern-display" id="pattern-area"></div>
+
+            <p class="instruction">¿Cuál sigue?</p>
+            <div class="options-container" id="options-area"></div>
+            
+            <button class="btn-main" style="background: #57606f; box-shadow: 0 4px 0 #2f3542; font-size: 1rem; padding: 8px 20px; margin-top: 15px;" onclick="showMenu()">Menú</button>
+        </div>
+    </div>
+
+    <!-- Pantalla de Resultados -->
+    <div class="overlay" id="resultOverlay">
+        <div id="resultMessage" class="message"></div>
+        <div id="result-actions">
+            <button class="btn-main" id="result-btn">Jugar de Nuevo</button>
+            <button class="btn-main" style="background: #57606f; box-shadow: 0 6px 0 #2f3542;" onclick="showMenu()">Menú Principal</button>
+        </div>
+    </div>
+
+    <script>
+        const SHAPES = ['circle', 'square', 'rect'];
+        let currentLevelIndex = 0;
+        let activeDifficulty = 'easy';
+        let timeLeft = 30;
+        let lives = 3;
+        let timerInterval;
+        let correctAnswer = '';
+        let isGameActive = false;
+
+        const allLevels = {
+            easy: [
+                { pattern: ['circle', 'square', 'circle', 'square'], answer: 'circle' },
+                { pattern: ['square', 'rect', 'square', 'rect'], answer: 'square' },
+                { pattern: ['rect', 'circle', 'rect', 'circle'], answer: 'rect' },
+                { pattern: ['square', 'square', 'circle', 'square', 'square'], answer: 'circle' },
+                { pattern: ['circle', 'circle', 'rect', 'circle', 'circle'], answer: 'rect' },
+                { pattern: ['rect', 'rect', 'square', 'rect', 'rect'], answer: 'square' }
+            ],
+            medium: [
+                { pattern: ['circle', 'square', 'rect', 'circle', 'square'], answer: 'rect' },
+                { pattern: ['rect', 'circle', 'square', 'rect', 'circle'], answer: 'square' },
+                { pattern: ['square', 'rect', 'circle', 'square', 'rect'], answer: 'circle' },
+                { pattern: ['circle', 'circle', 'square', 'square', 'circle', 'circle'], answer: 'square' },
+                { pattern: ['rect', 'rect', 'circle', 'circle', 'rect', 'rect'], answer: 'circle' },
+                { pattern: ['square', 'circle', 'circle', 'square', 'circle'], answer: 'circle' }
+            ],
+            hard: [
+                { pattern: ['circle', 'rect', 'rect', 'circle', 'rect'], answer: 'rect' },
+                { pattern: ['square', 'square', 'rect', 'circle', 'square', 'square', 'rect'], answer: 'circle' },
+                { pattern: ['rect', 'circle', 'square', 'circle', 'rect', 'circle'], answer: 'square' },
+                { pattern: ['circle', 'square', 'circle', 'rect', 'circle', 'square', 'circle'], answer: 'rect' },
+                { pattern: ['rect', 'rect', 'square', 'square', 'circle', 'rect', 'rect', 'square'], answer: 'square' },
+                { pattern: ['square', 'rect', 'circle', 'rect', 'square', 'rect'], answer: 'circle' }
+            ]
+        };
+
+        const mainContainer = document.getElementById('mainContainer');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const patternArea = document.getElementById('pattern-area');
+        const optionsArea = document.getElementById('options-area');
+        const timerElement = document.getElementById('timer');
+        const livesDisplay = document.getElementById('lives-display');
+        const levelText = document.getElementById('level-text');
+        const modeText = document.getElementById('mode-text');
+        const overlay = document.getElementById('resultOverlay');
+        const resultMessage = document.getElementById('resultMessage');
+        const resultBtn = document.getElementById('result-btn');
+
+        function showMenu() {
+            clearInterval(timerInterval);
+            isGameActive = false;
+            overlay.style.display = 'none';
+            gameScreen.style.display = 'none';
+            startScreen.style.display = 'block';
+        }
+
+        function initGame(diff) {
+            activeDifficulty = diff;
+            currentLevelIndex = 0;
+            lives = 3;
+            overlay.style.display = 'none';
+            startScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            
+            const labels = { easy: 'Fácil', medium: 'Medio', hard: 'Difícil' };
+            modeText.textContent = labels[diff];
+            
+            updateLivesDisplay();
+            loadLevel();
+        }
+
+        function updateLivesDisplay() {
+            livesDisplay.textContent = '❤️'.repeat(lives);
+        }
+
+        function loadLevel() {
+            isGameActive = true;
+            timeLeft = 30;
+            updateTimerDisplay();
+            levelText.textContent = `Nivel ${currentLevelIndex + 1} de 6`;
+            
+            clearInterval(timerInterval);
+            startTimer();
+
+            const levelData = allLevels[activeDifficulty][currentLevelIndex];
+            correctAnswer = levelData.answer;
+
+            patternArea.innerHTML = '';
+            levelData.pattern.forEach(shapeType => {
+                const el = document.createElement('div');
+                el.className = `shape ${shapeType}`;
+                patternArea.appendChild(el);
+            });
+
+            const slot = document.createElement('div');
+            slot.className = 'missing-slot';
+            slot.textContent = '?';
+            patternArea.appendChild(slot);
+
+            optionsArea.innerHTML = '';
+            const shuffledOptions = [...SHAPES].sort(() => Math.random() - 0.5);
+            
+            shuffledOptions.forEach(shapeType => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.onclick = () => handleChoice(shapeType);
+                
+                const shapeImg = document.createElement('div');
+                shapeImg.className = `shape ${shapeType}`;
+                // Pequeño ajuste para que las figuras en los botones no sean tan gigantes
+                shapeImg.style.transform = 'scale(0.85)';
+                
+                btn.appendChild(shapeImg);
+                optionsArea.appendChild(btn);
+            });
+        }
+
+        function startTimer() {
+            timerElement.classList.remove('warning');
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 5) timerElement.classList.add('warning');
+                if (timeLeft <= 0) endGame(false);
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            timerElement.textContent = timeLeft;
+        }
+
+        function handleChoice(choice) {
+            if (!isGameActive) return;
+
+            if (choice === correctAnswer) {
+                if (currentLevelIndex < 5) {
+                    currentLevelIndex++;
+                    loadLevel();
+                } else {
+                    endGame(true);
+                }
+            } else {
+                lives--;
+                updateLivesDisplay();
+                
+                mainContainer.classList.add('shake');
+                setTimeout(() => mainContainer.classList.remove('shake'), 400);
+
+                if (lives <= 0) {
+                    endGame(false);
+                }
+            }
+        }
+
+        function endGame(isWin) {
+            isGameActive = false;
+            clearInterval(timerInterval);
+            overlay.style.display = 'flex';
+
+            if (isWin) {
+                resultMessage.textContent = "¡Ganaste!";
+                resultMessage.className = "message win";
+                resultBtn.textContent = "Jugar de Nuevo";
+                resultBtn.onclick = () => initGame(activeDifficulty);
+            } else {
+                resultMessage.textContent = "¡Perdiste!";
+                resultMessage.className = "message lose";
+                resultBtn.textContent = "Reintentar";
+                resultBtn.onclick = () => initGame(activeDifficulty);
+            }
+        }
+    </script>
+</body>
+</html>

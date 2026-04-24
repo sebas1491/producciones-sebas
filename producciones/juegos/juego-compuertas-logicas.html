@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogicMaster Pro - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --bg-main: #0a0f1d;
+            --bg-card: #141b2d;
+            --accent: #6366f1;
+            --success: #10b981;
+            --error: #f43f5e;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-main);
+            color: #f1f5f9;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--bg-card);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background: radial-gradient(circle at center, #111827 0%, #0a0f1d 100%);
+        }
+
+        .glass-panel {
+            background: #111827;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .logic-cell {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            aspect-ratio: 1/1;
+            width: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.25rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .logic-cell:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.2);
+            transform: scale(1.05);
+        }
+
+        .active-1 {
+            background: var(--success) !important;
+            color: white !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            border: none;
+        }
+
+        .active-0 {
+            background: #475569 !important;
+            color: #f1f5f9 !important;
+            border: none;
+        }
+
+        .progress-segment {
+            height: 4px;
+            flex-grow: 1;
+            background: #1e293b;
+            border-radius: 2px;
+            margin: 0 2px;
+        }
+
+        .progress-segment.active {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .gate-svg-container {
+            filter: drop-shadow(0 0 12px rgba(99, 102, 241, 0.6));
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
+        }
+
+        .error-shake {
+            animation: shake 0.4s ease-in-out, pulse-red 0.4s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+
+        .hidden { display: none !important; }
+
+        table { border-collapse: collapse; overflow: hidden; border-radius: 16px; }
+        th { 
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted); 
+            font-size: 0.7rem; 
+            font-weight: 900;
+            letter-spacing: 0.15em; 
+            text-transform: uppercase; 
+            padding: 1.25rem 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .table-row {
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .table-row:nth-child(even) {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table-row:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        td { padding: 1rem 0; text-align: center; }
+        
+        .input-val {
+            font-family: 'monospace';
+            font-size: 1.4rem;
+            color: #fff;
+            font-weight: 600;
+            text-shadow: 0 0 5px rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen" class="fixed inset-0 z-50 flex items-center justify-center bg-[#0a0f1d]">
+        <div class="text-center p-12 glass-panel border-indigo-500/30 max-w-lg">
+            <h1 class="text-5xl font-black mb-6 text-white tracking-tighter">
+                LOGIC<span class="text-indigo-500">MASTER</span> <span class="text-xs align-top border border-indigo-500 px-2 py-1 rounded text-indigo-400">PRO</span>
+            </h1>
+            <p class="text-slate-400 mb-10 leading-relaxed text-lg">Completa las tablas de verdad para desbloquear los núcleos del sistema. Domina la arquitectura lógica binaria.</p>
+            <button onclick="startGame()" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-2xl transition-all transform active:scale-95 shadow-2xl shadow-indigo-500/40 text-lg tracking-widest">
+                INICIAR TERMINAL
+            </button>
+        </div>
+    </div>
+
+    <div id="game-interface" class="layout-grid hidden">
+        <aside class="sidebar">
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-3">
+                    <span class="text-xs font-black text-indigo-400 tracking-widest uppercase">Fase de Operación</span>
+                    <span id="level-tag" class="text-3xl font-bold text-white">01 / 07</span>
+                </div>
+                <div id="progress-container" class="flex gap-1"></div>
+            </div>
+
+            <div class="flex-grow flex flex-col justify-center">
+                <div id="gate-icon" class="gate-svg-container mb-10 flex justify-center"></div>
+                <h2 id="gate-name" class="text-5xl font-black mb-4 tracking-tighter">---</h2>
+                <div class="space-y-6">
+                    <p id="gate-desc" class="text-slate-400 text-lg leading-snug"></p>
+                    <div class="p-5 bg-indigo-500/5 rounded-2xl border border-indigo-500/20">
+                        <span class="block text-[10px] font-black text-indigo-400 uppercase mb-2 tracking-widest">Protocolo de Ayuda</span>
+                        <p id="gate-tip" class="text-sm text-slate-300 italic font-medium leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-auto pt-8 border-t border-white/5">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Integridad del Sistema</span>
+                    <div id="hearts" class="flex gap-1.5 text-xl"></div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div id="table-card" class="glass-panel overflow-hidden">
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-1/3">Bus A</th>
+                            <th id="header-b" class="w-1/3">Bus B</th>
+                            <th class="w-1/3 text-indigo-400">Salida Q</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+                <div class="p-8 bg-slate-900/40 border-t border-white/5">
+                    <button onclick="checkLevel()" id="check-btn" class="w-full py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all tracking-[0.2em] text-xs shadow-lg shadow-indigo-900/20 uppercase">
+                        Verificar Secuencia
+                    </button>
+                </div>
+            </div>
+
+            <div id="win-screen" class="hidden absolute inset-0 bg-emerald-950/95 backdrop-blur-xl flex items-center justify-center p-8 z-10 text-center">
+                <div>
+                    <div class="text-8xl mb-6">🏆</div>
+                    <h2 class="text-5xl font-black text-white mb-4 tracking-tighter">ACCESO CONCEDIDO</h2>
+                    <p class="text-emerald-200 mb-10 text-lg max-w-sm mx-auto">Has sincronizado todos los núcleos lógicos con éxito.</p>
+                    <button onclick="resetGame()" class="px-12 py-5 bg-white text-emerald-950 font-black rounded-2xl text-lg hover:bg-emerald-50 transition-colors uppercase tracking-widest">Reiniciar</button>
+                </div>
+            </div>
+
+            <div id="lose-screen" class="hidden absolute inset-0 bg-rose-950/95 backdrop-blur-xl flex items-center justify-center p-8 z-10 text-center">
+                <div>
+                    <div class="text-8xl mb-6">❌</div>
+                    <h2 class="text-5xl font-black text-white mb-4 tracking-tighter">FALLO DE SISTEMA</h2>
+                    <p class="text-rose-200 mb-10 text-lg max-w-sm mx-auto">Demasiados errores de procesamiento detectados.</p>
+                    <button onclick="resetGame()" class="px-12 py-5 bg-rose-500 text-white font-black rounded-2xl text-lg hover:bg-rose-400 transition-colors uppercase tracking-widest">Reintentar</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSfx(freq, type = 'sine', duration = 0.1, volume = 0.05) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        const gateSVGs = {
+            NOT: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M20 20 L20 80 L70 50 Z"/><circle cx="80" cy="50" r="8" stroke="#6366f1" fill="none"/></svg>`,
+            AND: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M20 20 H50 C70 20 85 35 85 50 C85 65 70 80 50 80 H20 V20 Z"/></svg>`,
+            OR: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M20 20 C35 20 45 35 45 50 C45 65 35 80 20 80 C40 80 85 70 85 50 C85 30 40 20 20 20 Z"/></svg>`,
+            NAND: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M20 20 H45 C65 20 80 35 80 50 C80 65 65 80 45 80 H20 V20 Z"/><circle cx="88" cy="50" r="6" stroke="#6366f1"/></svg>`,
+            NOR: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M15 20 C30 20 40 35 40 50 C40 65 30 80 15 80 C35 80 80 70 80 50 C80 30 35 20 15 20 Z"/><circle cx="88" cy="50" r="6" stroke="#6366f1"/></svg>`,
+            XOR: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M10 20 C25 20 35 35 35 50 C35 65 25 80 10 80" stroke-opacity="0.5"/><path d="M20 20 C35 20 45 35 45 50 C45 65 35 80 20 80 C40 80 85 70 85 50 C85 30 40 20 20 20 Z"/></svg>`,
+            XNOR: `<svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="#6366f1" stroke-width="4"><path d="M10 20 C25 20 35 35 35 50 C35 65 25 80 10 80" stroke-opacity="0.5"/><path d="M20 20 C35 20 45 35 45 50 C45 65 35 80 20 80 C40 80 80 70 80 50 C80 30 40 20 20 20 Z"/><circle cx="88" cy="50" r="6" stroke="#6366f1"/></svg>`
+        };
+
+        const levels = [
+            { id: 'NOT', name: 'Compuerta NOT', desc: 'Invierte el flujo lógico. Transforma 1 en 0 y viceversa.', tip: 'Entrada y salida son siempre opuestas.', inputs: 1 },
+            { id: 'AND', name: 'Compuerta AND', desc: 'Requiere que todas las entradas sean activas (1) para dar salida.', tip: 'Solo 1 y 1 resultan en una señal activa.', inputs: 2 },
+            { id: 'OR', name: 'Compuerta OR', desc: 'Se activa si al menos una de las entradas es positiva.', tip: 'Cualquier presencia de un 1 activa la salida.', inputs: 2 },
+            { id: 'NAND', name: 'Compuerta NAND', desc: 'Comportamiento inverso a la AND. Puerta universal.', tip: 'Resultado es 1 a menos que ambas sean 1.', inputs: 2 },
+            { id: 'NOR', name: 'Compuerta NOR', desc: 'Solo se activa si ninguna entrada está recibiendo señal.', tip: 'Únicamente 0 y 0 producen un 1.', inputs: 2 },
+            { id: 'XOR', name: 'Compuerta XOR', desc: 'Verdadero solo si las señales de entrada son distintas entre sí.', tip: 'Diferentes dan 1, iguales dan 0.', inputs: 2 },
+            { id: 'XNOR', name: 'Compuerta XNOR', desc: 'Detecta si las señales en ambos canales son idénticas.', tip: 'Iguales dan 1, diferentes dan 0.', inputs: 2 }
+        ];
+
+        let currentLevel = 0;
+        let lives = 3;
+        let currentAnswers = [];
+
+        function startGame() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-interface').classList.remove('hidden');
+            lives = 3;
+            currentLevel = 0;
+            initProgressDots();
+            loadLevel();
+        }
+
+        function initProgressDots() {
+            const container = document.getElementById('progress-container');
+            container.innerHTML = '';
+            levels.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'progress-segment';
+                dot.id = `dot-${i}`;
+                container.appendChild(dot);
+            });
+        }
+
+        function loadLevel() {
+            const lvl = levels[currentLevel];
+            document.getElementById('level-tag').innerText = `${String(currentLevel + 1).padStart(2, '0')} / ${levels.length}`;
+            document.getElementById('gate-name').innerText = lvl.name;
+            document.getElementById('gate-desc').innerText = lvl.desc;
+            document.getElementById('gate-icon').innerHTML = gateSVGs[lvl.id];
+            document.getElementById('gate-tip').innerText = lvl.tip;
+            updateHearts();
+            
+            levels.forEach((_, i) => {
+                document.getElementById(`dot-${i}`).className = i <= currentLevel ? 'progress-segment active' : 'progress-segment';
+            });
+
+            const tbody = document.getElementById('table-body');
+            const headB = document.getElementById('header-b');
+            tbody.innerHTML = '';
+            currentAnswers = [];
+
+            if (lvl.inputs === 1) {
+                headB.classList.add('opacity-0');
+                [0, 1].forEach(a => addRow(a, null));
+            } else {
+                headB.classList.remove('opacity-0');
+                [0, 1].forEach(a => [0, 1].forEach(b => addRow(a, b)));
+            }
+        }
+
+        function addRow(a, b) {
+            const tbody = document.getElementById('table-body');
+            const tr = document.createElement('tr');
+            tr.className = 'table-row';
+            const idx = currentAnswers.length;
+            currentAnswers.push({ a, b, val: null });
+
+            tr.innerHTML = `
+                <td class="input-val">${a}</td>
+                <td class="input-val">${b !== null ? b : '-'}</td>
+                <td class="flex justify-center py-4">
+                    <button onclick="toggleCell(${idx}, this)" class="logic-cell">?</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        }
+
+        function toggleCell(idx, el) {
+            playSfx(400, 'sine', 0.05);
+            const current = currentAnswers[idx].val;
+            if (current === null || current === 0) {
+                currentAnswers[idx].val = 1;
+                el.innerText = '1';
+                el.className = 'logic-cell active-1';
+            } else {
+                currentAnswers[idx].val = 0;
+                el.innerText = '0';
+                el.className = 'logic-cell active-0';
+            }
+        }
+
+        function updateHearts() {
+            const container = document.getElementById('hearts');
+            container.innerHTML = '❤️'.repeat(lives) + '<span class="opacity-10">❤️</span>'.repeat(3-lives);
+        }
+
+        function checkLevel() {
+            const lvl = levels[currentLevel];
+            let mistakes = 0;
+
+            currentAnswers.forEach(ans => {
+                let correct;
+                switch(lvl.id) {
+                    case 'NOT': correct = ans.a === 0 ? 1 : 0; break;
+                    case 'AND': correct = (ans.a && ans.b) ? 1 : 0; break;
+                    case 'OR':  correct = (ans.a || ans.b) ? 1 : 0; break;
+                    case 'NAND': correct = !(ans.a && ans.b) ? 1 : 0; break;
+                    case 'NOR':  correct = !(ans.a || ans.b) ? 1 : 0; break;
+                    case 'XOR':  correct = (ans.a !== ans.b) ? 1 : 0; break;
+                    case 'XNOR': correct = (ans.a === ans.b) ? 1 : 0; break;
+                }
+                if (ans.val !== correct) mistakes++;
+            });
+
+            if (mistakes === 0) {
+                playSfx(600, 'sine', 0.1);
+                setTimeout(() => playSfx(800, 'sine', 0.2), 100);
+                if (currentLevel < levels.length - 1) {
+                    currentLevel++;
+                    loadLevel();
+                } else {
+                    document.getElementById('win-screen').classList.remove('hidden');
+                }
+            } else {
+                lives--;
+                updateHearts();
+                playSfx(150, 'sawtooth', 0.3);
+                const card = document.getElementById('table-card');
+                card.classList.add('error-shake');
+                setTimeout(() => card.classList.remove('error-shake'), 400);
+                if (lives <= 0) document.getElementById('lose-screen').classList.remove('hidden');
+            }
+        }
+
+        function resetGame() {
+            document.getElementById('win-screen').classList.add('hidden');
+            document.getElementById('lose-screen').classList.add('hidden');
+            startGame();
+        }
+    </script>
+</body>
+</html>

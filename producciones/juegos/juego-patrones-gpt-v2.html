@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego de Patrones</title>
+
+<style>
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    margin: 0;
+    background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ADEDE);
+    background-size: 600% 600%;
+    animation: bg 10s ease infinite;
+    color: white;
+}
+
+@keyframes bg {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+h1 { margin-top: 20px; }
+
+#game {
+    margin-top: 30px;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.shape {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.shape:hover {
+    transform: scale(1.2);
+}
+
+/* FIGURAS */
+.circle { background: #ff4757; border-radius: 50%; }
+
+.square { background: #1e90ff; }
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 35px solid transparent;
+    border-right: 35px solid transparent;
+    border-bottom: 70px solid #2ed573;
+}
+
+.rectangle {
+    width: 90px;
+    height: 60px;
+    background: #ffa502;
+}
+
+.missing {
+    background: #ddd;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    border-radius: 10px;
+}
+
+.options {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 10px;
+    background: black;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#timer {
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+.feedback {
+    font-size: 22px;
+    margin-top: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🧠 Juego de Patrones</h1>
+<div id="timer"></div>
+<button onclick="startGame()">Comenzar</button>
+
+<div id="game"></div>
+<div id="options" class="options"></div>
+<div id="feedback" class="feedback"></div>
+
+<script>
+const shapes = ["circle","square","triangle","rectangle"];
+
+let level = 1;
+let correctAnswer;
+let timer;
+let timeLeft = 30;
+
+function startGame() {
+    level = 1;
+    nextLevel();
+}
+
+function nextLevel() {
+    if (level > 6) {
+        document.getElementById("game").innerHTML = "<h2>🎉 GANASTE 🎉</h2><button onclick='startGame()'>Jugar otra vez</button>";
+        document.getElementById("options").innerHTML = "";
+        return;
+    }
+
+    document.getElementById("feedback").innerText = "";
+    timeLeft = 30;
+    startTimer();
+    generatePattern();
+}
+
+function startTimer(){
+    clearInterval(timer);
+    timer = setInterval(()=>{
+        timeLeft--;
+        document.getElementById("timer").innerText = "⏱ " + timeLeft + "s";
+        if(timeLeft <= 0) lose();
+    },1000);
+}
+
+function generatePattern(){
+    let pattern;
+
+    switch(level){
+        case 1:
+        case 2:
+            pattern = ["circle","square","circle","square","circle"];
+            break;
+
+        case 3:
+            pattern = ["circle","circle","square","square","circle"];
+            break;
+
+        case 4:
+            pattern = ["circle","square","triangle","circle","square"];
+            break;
+
+        case 5:
+            pattern = ["circle","square","square","circle","circle"];
+            break;
+
+        case 6:
+            pattern = ["circle","square","triangle","square","circle"];
+            break;
+    }
+
+    let missingIndex = Math.floor(Math.random()*pattern.length);
+    correctAnswer = pattern[missingIndex];
+
+    const game = document.getElementById("game");
+    game.innerHTML = "";
+
+    const row = document.createElement("div");
+    row.className = "row";
+
+    pattern.forEach((shape,i)=>{
+        let div = document.createElement("div");
+        div.className = "shape";
+
+        if(i === missingIndex){
+            div.classList.add("missing");
+            div.innerText = "?";
+        } else {
+            div.classList.add(shape);
+        }
+
+        row.appendChild(div);
+    });
+
+    game.appendChild(row);
+    generateOptions();
+}
+
+function generateOptions(){
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
+
+    shapes.forEach(shape=>{
+        let div = document.createElement("div");
+        div.className = "shape " + shape;
+        div.onclick = ()=>checkAnswer(shape);
+        optionsDiv.appendChild(div);
+    });
+}
+
+function checkAnswer(ans){
+    if(ans === correctAnswer){
+        document.getElementById("feedback").innerText = "✅ Correcto!";
+        setTimeout(()=>{
+            level++;
+            nextLevel();
+        },800);
+    } else {
+        lose();
+    }
+}
+
+function lose(){
+    clearInterval(timer);
+    document.getElementById("game").innerHTML = "<h2>❌ PERDISTE ❌</h2><button onclick='startGame()'>Reintentar</button>";
+    document.getElementById("options").innerHTML = "";
+    document.getElementById("feedback").innerText = "";
+}
+</script>
+
+</body>
+</html>
