@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Juego de Memoria</title>
+<style>
+    body {
+        font-family: 'Comic Sans MS', cursive;
+        background: linear-gradient(to bottom, #a8e6ff, #fff3b0);
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h1 {
+        color: #ff6b6b;
+    }
+
+    #game {
+        display: grid;
+        grid-template-columns: repeat(4, 80px);
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        width: 80px;
+        height: 80px;
+        font-size: 40px;
+        background: #ffccf9;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .hidden {
+        background: #ffd6a5;
+        color: transparent;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 18px;
+        border: none;
+        border-radius: 10px;
+        background: #6bcB77;
+        color: white;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #4caf50;
+    }
+
+    #timer {
+        font-size: 20px;
+        margin-top: 10px;
+        color: #333;
+    }
+
+    #message {
+        font-size: 24px;
+        margin-top: 15px;
+        color: #ff6b6b;
+    }
+</style>
+</head>
+<body>
+
+<h1>🧠 Juego de Memoria</h1>
+
+<button onclick="startGame()">Comenzar</button>
+<div id="timer">⏱️ 02:00</div>
+<div id="game"></div>
+<div id="message"></div>
+
+<script>
+const emojisBase = ["🐶","🐱","🦄","🐸","🐼","🐵","🐰","🦊"];
+let emojis = [];
+let firstCard = null;
+let lock = false;
+let matches = 0;
+let time = 120;
+let interval;
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+function startGame() {
+    const game = document.getElementById("game");
+    const message = document.getElementById("message");
+    game.innerHTML = "";
+    message.innerHTML = "";
+    matches = 0;
+    firstCard = null;
+    lock = false;
+    time = 120;
+
+    clearInterval(interval);
+
+    emojis = shuffle([...emojisBase, ...emojisBase]);
+
+    emojis.forEach(emoji => {
+        const card = document.createElement("div");
+        card.classList.add("card", "hidden");
+        card.textContent = emoji;
+
+        card.onclick = () => flipCard(card);
+
+        game.appendChild(card);
+    });
+
+    interval = setInterval(updateTimer, 1000);
+}
+
+function updateTimer() {
+    time--;
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+
+    document.getElementById("timer").textContent =
+        `⏱️ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    if (time <= 0) {
+        clearInterval(interval);
+        endGame(false);
+    }
+}
+
+function flipCard(card) {
+    if (lock || !card.classList.contains("hidden")) return;
+
+    card.classList.remove("hidden");
+
+    if (!firstCard) {
+        firstCard = card;
+        return;
+    }
+
+    if (firstCard.textContent === card.textContent) {
+        matches++;
+        firstCard = null;
+
+        if (matches === 8) {
+            clearInterval(interval);
+            endGame(true);
+        }
+    } else {
+        lock = true;
+        setTimeout(() => {
+            card.classList.add("hidden");
+            firstCard.classList.add("hidden");
+            firstCard = null;
+            lock = false;
+        }, 800);
+    }
+}
+
+function endGame(win) {
+    const message = document.getElementById("message");
+    if (win) {
+        message.innerHTML = "🎉 ¡Ganaste!";
+    } else {
+        message.innerHTML = "😢 Perdiste";
+    }
+}
+</script>
+
+</body>
+</html>

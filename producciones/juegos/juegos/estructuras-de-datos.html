@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estructuras de Datos Lab - Modo Oscuro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .box-shadow {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .item-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .highlight-pulse {
+            animation: pulse-border 1.5s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% { border-color: #3b82f6; }
+            50% { border-color: #60a5fa; }
+            100% { border-color: #3b82f6; }
+        }
+
+        .node {
+            min-width: 60px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .key-val-pair {
+            background: #1e293b;
+            border-left: 4px solid #8b5cf6;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-5xl mx-auto mb-8 text-center">
+        <h1 class="text-4xl font-bold text-blue-400 mb-2">Estructuras de Datos Lab</h1>
+        <p class="text-slate-400">Guía visual interactiva para aprender a organizar información en programación.</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="lg:col-span-1 space-y-2">
+            <button onclick="switchTab('variable')" id="btn-variable" class="nav-btn w-full text-left p-4 rounded-xl bg-blue-600 font-semibold transition-colors">📦 Variable</button>
+            <button onclick="switchTab('lista')" id="btn-lista" class="nav-btn w-full text-left p-4 rounded-xl bg-slate-800 hover:bg-slate-700 transition-colors">🔗 Lista</button>
+            <button onclick="switchTab('arreglo')" id="btn-arreglo" class="nav-btn w-full text-left p-4 rounded-xl bg-slate-800 hover:bg-slate-700 transition-colors">📏 Arreglo</button>
+            <button onclick="switchTab('diccionario')" id="btn-diccionario" class="nav-btn w-full text-left p-4 rounded-xl bg-slate-800 hover:bg-slate-700 transition-colors">📖 Diccionario</button>
+        </nav>
+
+        <!-- Canvas Area -->
+        <section class="lg:col-span-3 bg-slate-900 border border-slate-800 rounded-2xl p-6 box-shadow min-h-[500px] flex flex-col">
+            
+            <div id="content-header" class="mb-6">
+                <h2 id="view-title" class="text-2xl font-bold mb-2">Variable</h2>
+                <p id="view-desc" class="text-slate-400 italic">"Una variable es como una caja con nombre donde guardas un solo valor a la vez."</p>
+            </div>
+
+            <!-- Interaction Controls -->
+            <div id="controls" class="mb-8 flex flex-wrap gap-3 p-4 bg-slate-800/50 rounded-xl">
+                <!-- Dynamic controls go here -->
+            </div>
+
+            <!-- Visualization Zone -->
+            <div id="visualization" class="flex-grow flex items-center justify-center border-t border-slate-800 pt-8 overflow-x-auto">
+                <!-- Visual elements go here -->
+            </div>
+
+            <!-- Code Preview -->
+            <div class="mt-8">
+                <p class="text-xs uppercase text-slate-500 font-bold mb-2">Representación en Código (JavaScript)</p>
+                <div class="bg-black p-4 rounded-lg border border-slate-700">
+                    <code id="code-snippet" class="code-font text-green-400">let miVariable = "Hola Mundo";</code>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let currentTab = 'variable';
+        
+        // App State
+        const state = {
+            variable: "Python",
+            lista: ["🍎 Manzana", "🍌 Banana", "🍒 Cereza"],
+            arreglo: ["A", "B", "C", "D"],
+            diccionario: { "nombre": "Juan", "edad": "16", "curso": "4to B" }
+        };
+
+        const config = {
+            variable: {
+                title: "Variable",
+                desc: "Es el concepto más básico: un espacio en memoria con un nombre (identificador) que contiene un dato.",
+                controls: () => `
+                    <input type="text" id="input-var" placeholder="Nuevo valor..." class="bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none focus:border-blue-500">
+                    <button onclick="updateVariable()" class="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500 transition">Asignar valor</button>
+                `,
+                render: () => `
+                    <div class="flex flex-col items-center">
+                        <span class="text-blue-400 mb-2 font-bold uppercase tracking-widest text-xs">Identificador: miDato</span>
+                        <div class="w-32 h-32 border-4 border-dashed border-blue-500 rounded-2xl flex items-center justify-center text-xl font-bold bg-blue-500/10 highlight-pulse">
+                            ${state.variable}
+                        </div>
+                    </div>
+                `,
+                code: () => `let miDato = "${state.variable}";`
+            },
+            lista: {
+                title: "Lista (Dinámica)",
+                desc: "Una colección ordenada de elementos que puede crecer o disminuir. Los elementos están 'conectados'.",
+                controls: () => `
+                    <input type="text" id="input-list" placeholder="Nuevo elemento..." class="bg-slate-700 p-2 rounded border border-slate-600 focus:outline-none">
+                    <button onclick="addToList()" class="bg-green-600 px-4 py-2 rounded hover:bg-green-500 transition">Agregar al final</button>
+                    <button onclick="popFromList()" class="bg-red-600 px-4 py-2 rounded hover:bg-red-500 transition">Eliminar último</button>
+                `,
+                render: () => `
+                    <div class="flex gap-4 items-center">
+                        ${state.lista.map((item, i) => `
+                            <div class="node item-transition">
+                                ${item}
+                                ${i < state.lista.length - 1 ? '<div class="absolute -right-5 text-blue-500">→</div>' : ''}
+                            </div>
+                        `).join('')}
+                        ${state.lista.length === 0 ? '<span class="text-slate-500 italic">La lista está vacía</span>' : ''}
+                    </div>
+                `,
+                code: () => `let miLista = [${state.lista.map(i => `"${i}"`).join(", ")}];`
+            },
+            arreglo: {
+                title: "Arreglo (Array)",
+                desc: "Estructura donde cada elemento tiene una posición fija llamada 'Índice'. ¡En programación empezamos a contar desde 0!",
+                controls: () => `
+                    <input type="number" id="input-idx" value="0" min="0" max="${state.arreglo.length-1}" class="bg-slate-700 p-2 w-20 rounded border border-slate-600">
+                    <input type="text" id="input-arr-val" placeholder="Nuevo valor" class="bg-slate-700 p-2 rounded border border-slate-600">
+                    <button onclick="updateArray()" class="bg-amber-600 px-4 py-2 rounded hover:bg-amber-500 transition">Cambiar en Índice</button>
+                `,
+                render: () => `
+                    <div class="flex flex-col items-center">
+                        <div class="flex border-2 border-slate-700 rounded-lg overflow-hidden">
+                            ${state.arreglo.map((item, i) => `
+                                <div class="flex flex-col">
+                                    <div class="bg-slate-800 p-1 text-center text-[10px] text-slate-500 border-b border-slate-700">IDX: ${i}</div>
+                                    <div class="w-16 h-16 flex items-center justify-center border-r border-slate-700 bg-slate-900 font-bold">${item}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `,
+                code: () => `let miArreglo = [${state.arreglo.map(i => `"${i}"`).join(", ")}];\n// miArreglo[0] es "${state.arreglo[0]}"`
+            },
+            diccionario: {
+                title: "Diccionario / Objeto",
+                desc: "No usa números para buscar, usa 'Claves'. Es como una agenda: buscas por nombre para encontrar el teléfono.",
+                controls: () => `
+                    <input type="text" id="input-key" placeholder="Clave (ej: ciudad)" class="bg-slate-700 p-2 rounded border border-slate-600">
+                    <input type="text" id="input-val" placeholder="Valor" class="bg-slate-700 p-2 rounded border border-slate-600">
+                    <button onclick="updateDict()" class="bg-purple-600 px-4 py-2 rounded hover:bg-purple-500 transition">Agregar/Actualizar</button>
+                `,
+                render: () => `
+                    <div class="w-full max-w-md">
+                        ${Object.entries(state.diccionario).map(([key, val]) => `
+                            <div class="key-val-pair flex justify-between items-center group">
+                                <div>
+                                    <span class="text-purple-400 font-bold text-sm">"${key}":</span>
+                                    <span class="text-slate-200">"${val}"</span>
+                                </div>
+                                <button onclick="deleteDictKey('${key}')" class="text-slate-600 hover:text-red-400 text-xs opacity-0 group-hover:opacity-100 transition">borrar</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                `,
+                code: () => `let miDiccionario = {\n${Object.entries(state.diccionario).map(([k,v]) => `  "${k}": "${v}"`).join(",\n")}\n};`
+            }
+        };
+
+        function render() {
+            const current = config[currentTab];
+            document.getElementById('view-title').innerText = current.title;
+            document.getElementById('view-desc').innerText = current.desc;
+            document.getElementById('controls').innerHTML = current.controls();
+            document.getElementById('visualization').innerHTML = current.render();
+            document.getElementById('code-snippet').innerText = current.code();
+
+            // Highlight Active Button
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.replace('bg-blue-600', 'bg-slate-800');
+            });
+            document.getElementById(`btn-${currentTab}`).classList.replace('bg-slate-800', 'bg-blue-600');
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            render();
+        }
+
+        // Variable Logic
+        function updateVariable() {
+            const val = document.getElementById('input-var').value;
+            if(val) state.variable = val;
+            render();
+        }
+
+        // List Logic
+        function addToList() {
+            const val = document.getElementById('input-list').value;
+            if(val) state.lista.push(val);
+            render();
+        }
+        function popFromList() {
+            state.lista.pop();
+            render();
+        }
+
+        // Array Logic
+        function updateArray() {
+            const idx = document.getElementById('input-idx').value;
+            const val = document.getElementById('input-arr-val').value;
+            if(val && state.arreglo[idx] !== undefined) {
+                state.arreglo[idx] = val;
+            }
+            render();
+        }
+
+        // Dictionary Logic
+        function updateDict() {
+            const key = document.getElementById('input-key').value;
+            const val = document.getElementById('input-val').value;
+            if(key && val) {
+                state.diccionario[key] = val;
+            }
+            render();
+        }
+        function deleteDictKey(key) {
+            delete state.diccionario[key];
+            render();
+        }
+
+        // Initial Boot
+        window.onload = render;
+    </script>
+</body>
+</html>
