@@ -157,7 +157,8 @@
 
     <nav>
         <div class="nav-header">
-            <span>Guia - POO</span>
+            <span>unipe TALLER</span>
+            <small>Diseño y construcción de recursos</small>
         </div>
         <div class="nav-links">
             <a href="#intro" class="active">Introducción</a>
@@ -175,83 +176,79 @@
     </nav>
 
     <main>
-        <!-- INTRODUCCIÓN -->
         <section id="intro" class="content-section">
-            <h1>Conceptos de Progra. Orientada a Objetos</h1>
+            <h1>Programación Orientada a Objetos</h1>
             <p class="subtitle">Juan Sebastian Olivera, Nadia malaver</p>
             <div class="info-card">
                 <p>La Programación Orientada a Objetos (POO) es un paradigma de programación que organiza el código en base a "objetos", los cuales representan elementos del mundo real dentro de un programa.</p>
             </div>
         </section>
 
-<!-- OBJETO -->
-<section class="content-section">
-<h2>Objeto</h2>
-<p>Un objeto es una representación de una entidad del mundo real dentro de un programa.</p>
-<div class="example-box">
-<p>Alumno → nombre, edad, notas</p>
-<p>Acciones → estudiar(), rendirExamen()</p>
-</div>
-</section>
+        <section id="objeto" class="content-section">
+            <h2>Objeto</h2>
+            <p>Un objeto es una representación de una entidad del mundo real dentro de un programa. Cada objeto tiene:</p>
+            <ul>
+                <li>Atributos: sus características</li>
+                <li>Métodos: las acciones que puede realizar</li>
+            </ul>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>Un alumno puede tener: nombre, edad, notas.</p>
+                <p>Y puede realizar acciones como: estudiar(), rendirExamen().</p>
+            </div>
+        </section>
 
-<!-- CLASE -->
-<section class="content-section">
-<h2>Clase</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 1. Clase</span>
-
+        <section id="clase" class="content-section">
+            <h2>Clase</h2>
+            <p>Una clase es un molde o plantilla que se utiliza para crear objetos. Define qué atributos tendrán y qué métodos podrán ejecutar.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>La clase Alumno define cómo serán todos los alumnos del sistema.</p>
+            </div>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="cmt">// CLASE: es el molde para crear objetos</span>
 <span class="kwd">class</span> <span class="fnc">Persona</span> {
-
 <span class="fnc">constructor</span>(nombre, edad) {
-<span class="kwd">this</span>.nombre = nombre;
-<span class="kwd">this</span>.edad = edad;
+<span class="kwd">this</span>.nombre = nombre; <span class="cmt">// atributo</span>
+<span class="kwd">this</span>.edad = edad; <span class="cmt">// atributo</span>
 }
 
+<span class="cmt">// método (acción)</span>
 <span class="fnc">saludar</span>() {
 <span class="fnc">console</span>.log(<span class="str">"Hola, mi nombre es "</span> + <span class="kwd">this</span>.nombre);
 }
-
 }
 
+<span class="cmt">// OBJETO: instancia de la clase</span>
 <span class="cmt">// const persona1 = new Persona("Juan", 16);</span>
+
+<span class="cmt">// uso del método</span>
 <span class="cmt">// persona1.saludar();</span></code></pre>
-</div>
-</section>
+            </div>
+        </section>
 
-<!-- ATRIBUTO -->
-<section class="content-section">
-<h2>Atributo</h2>
+        <section id="atributo" class="content-section">
+            <h2>Atributo</h2>
+            <p>Un atributo es una propiedad o característica de un objeto. Puede ser de distintos tipos: número, texto, booleano.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>nombre = "Juan"<br>edad = 16<br>aprobado = true</p>
+            </div>
+        </section>
 
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 2. Atributos</span>
+        <section id="metodo" class="content-section">
+            <h2>Método</h2>
+            <p>Un método es una función que pertenece a un objeto y define su comportamiento.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>calcular Promedio(), aprobarMateria()</p>
+            </div>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="kwd">class</span> <span class="fnc">Calculadora</span> {
 
-<span class="kwd">class</span> <span class="fnc">Auto</span> {
-
-<span class="fnc">constructor</span>(marca, modelo) {
-<span class="kwd">this</span>.marca = marca;
-<span class="kwd">this</span>.modelo = modelo;
-}
-
-}
-
-<span class="cmt">// const auto1 = new Auto("Toyota", "Corolla");</span>
-<span class="cmt">// console.log(auto1.marca);</span></code></pre>
-</div>
-</section>
-
-<!-- MÉTODO -->
-<section class="content-section">
-<h2>Método</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 3. Método</span>
-
-<span class="kwd">class</span> <span class="fnc">Calculadora</span> {
-
+<span class="cmt">// método que suma dos números</span>
 <span class="fnc">sumar</span>(a, b) {
 <span class="kwd">return</span> a + b;
 }
@@ -260,95 +257,86 @@
 
 <span class="cmt">// const calc = new Calculadora();</span>
 <span class="cmt">// console.log(calc.sumar(5, 3));</span></code></pre>
-</div>
-</section>
+            </div>
+        </section>
 
-<!-- ABSTRACCIÓN -->
-<section class="content-section">
-<h2>Abstracción</h2>
+        <section id="abstraccion" class="content-section">
+            <h2>Abstracción</h2>
+            <p>La abstracción consiste en simplificar la realidad, representando solo los aspectos importantes de un objeto y dejando de lado los detalles innecesarios.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>En un sistema de gestión de alumnos, lo que nos interesa de un objeto Alumno es su nombre y sus notas, pero no nos interesa el color de su pelo o su comida favorita.</p>
+            </div>
+        </section>
 
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 4. Abstracción</span>
-
-<span class="kwd">class</span> <span class="fnc">Estudiante</span> {
-
-<span class="fnc">constructor</span>(nombre, nota) {
-<span class="kwd">this</span>.nombre = nombre;
-<span class="kwd">this</span>.nota = nota;
-
-<span class="cmt">// datos irrelevantes omitidos</span>
-}
-
-}
-
-<span class="cmt">// const estudiante = new Estudiante("Ana", 9);</span></code></pre>
-</div>
-</section>
-
-<!-- ENCAPSULAMIENTO -->
-<section class="content-section">
-<h2>Encapsulamiento</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 5. Encapsulamiento</span>
-
-<span class="kwd">class</span> <span class="fnc">CuentaBancaria</span> {
+        <section id="encapsulamiento" class="content-section">
+            <h2>Encapsulamiento</h2>
+            <p>Consiste en proteger los datos de un objeto, evitando que se pueda acceder a ellos directamente desde fuera de la clase.</p>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="kwd">class</span> <span class="fnc">CuentaBancaria</span> {
 
 <span class="fnc">constructor</span>(titular) {
 <span class="kwd">this</span>.titular = titular;
-<span class="kwd">this</span>._saldo = <span class="num">0</span>;
+<span class="kwd">this</span>._saldo = <span class="num">0</span>; <span class="cmt">// "privado" (convención con_)</span>
 }
 
+<span class="cmt">// método para depositar dinero</span>
 <span class="fnc">depositar</span>(monto) {
 <span class="kwd">this</span>._saldo += monto;
 }
 
+<span class="cmt">// método para ver el saldo</span>
 <span class="fnc">verSaldo</span>() {
 <span class="kwd">return</span> <span class="kwd">this</span>._saldo;
 }
 
 }
 
-<span class="cmt">// const cuenta = new CuentaBancaria("Carlos");</span></code></pre>
-</div>
-</section>
+<span class="cmt">// const cuenta = new CuentaBancaria("Carlos");</span>
+<span class="cmt">// cuenta.depositar(1000);</span>
+<span class="cmt">// console.log(cuenta.verSaldo()); // 1000</span></code></pre>
+            </div>
+        </section>
 
-<!-- HERENCIA -->
-<section class="content-section">
-<h2>Herencia</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 6. Herencia</span>
-
+        <section id="herencia" class="content-section">
+            <h2>Herencia</h2>
+            <p>Mecanismo que permite crear una clase nueva a partir de una clase existente. La clase nueva (clase hija) hereda los atributos y métodos de la clase original (clase padre), y puede agregar los suyos propios.</p>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="cmt">// Clase base</span>
 <span class="kwd">class</span> <span class="fnc">Animal</span> {
-
 <span class="fnc">hacerSonido</span>() {
-<span class="fnc">console</span>.log(<span class="str">"Sonido"</span>);
+<span class="fnc">console</span>.log(<span class="str">"El animal hace un sonido"</span>);
+}
 }
 
-}
-
+<span class="cmt">// Clase hija</span>
 <span class="kwd">class</span> <span class="fnc">Perro</span> <span class="kwd">extends</span> <span class="fnc">Animal</span> {
-
 <span class="fnc">hacerSonido</span>() {
-<span class="fnc">console</span>.log(<span class="str">"Ladra"</span>);
+<span class="fnc">console</span>.log(<span class="str">"El perro ladra"</span>);
+}
 }
 
+<span class="cmt">// const perro = new Perro();</span>
+<span class="cmt">// perro.hacerSonido();</span></code></pre>
+            </div>
+        </section>
+
+        <section id="polimorfismo" class="content-section">
+            <h2>Polimorfismo</h2>
+            <p>El polimorfismo es la capacidad de que distintos objetos respondan de manera diferente ante un mismo método.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo del taller:</div>
+                <p>En un sistema educativo, tanto un AlumnoRegular como un AlumnoLibre tienen un método calcularNotaFinal(), pero cada uno lo hace de manera distinta (el regular promedia parciales y el libre rinde un examen final).</p>
+            </div>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="kwd">class</span> <span class="fnc">Animal</span> {
+<span class="fnc">hacerSonido</span>() {
+<span class="fnc">console</span>.log(<span class="str">"Sonido genérico"</span>);
 }
-
-<span class="cmt">// const perro = new Perro();</span></code></pre>
-</div>
-</section>
-        <!-- POLIMORFISMO -->
-<section class="content-section">
-<h2>Polimorfismo</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 7. Polimorfismo</span>
+}
 
 <span class="kwd">class</span> <span class="fnc">Gato</span> <span class="kwd">extends</span> <span class="fnc">Animal</span> {
 <span class="fnc">hacerSonido</span>() {
@@ -362,19 +350,22 @@
 }
 }
 
-<span class="cmt">// [new Gato(), new Vaca()].forEach(a => a.hacerSonido());</span></code></pre>
-</div>
-</section>
+<span class="cmt">// const animales = [new Gato(), new Vaca()];</span>
+<span class="cmt">// mismo método, distinto comportamiento</span>
+<span class="cmt">// animales.forEach(animal => {animal.hacerSonido();});</span></code></pre>
+            </div>
+        </section>
 
-<!-- DELEGACIÓN -->
-<section class="content-section">
-<h2>Delegación</h2>
-
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 8. Delegación</span>
-
-<span class="kwd">class</span> <span class="fnc">Impresora</span> {
+        <section id="delegacion" class="content-section">
+            <h2>Delegación</h2>
+            <p>Ocurre cuando un objeto le pide a otro objeto que realice una tarea por él.</p>
+            <div class="example-box">
+                <div class="example-title">Ejemplo:</div>
+                <p>Un objeto Alumno no calcula su nota final él mismo, sino que le pide a un objeto Profesor que lo haga.</p>
+            </div>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="kwd">class</span> <span class="fnc">Impresora</span> {
 <span class="fnc">imprimir</span>(texto) {
 <span class="fnc">console</span>.log(<span class="str">"Imprimiendo: "</span> + texto);
 }
@@ -387,21 +378,23 @@
 }
 
 <span class="fnc">imprimirDocumento</span>() {
+<span class="cmt">// delega la tarea a la impresora</span>
 <span class="kwd">this</span>.impresora.<span class="fnc">imprimir</span>(<span class="kwd">this</span>.contenido);
 }
-}</code></pre>
-</div>
-</section>
+}
 
-<!-- COLECCIONES -->
-<section class="content-section">
-<h2>Colecciones</h2>
+<span class="cmt">// const impresora = new Impresora();</span>
+<span class="cmt">// const doc = new Documento("Hola mundo", impresora);</span>
+<span class="cmt">// doc.imprimirDocumento();</span></code></pre>
+            </div>
+        </section>
 
-<div class="code-container">
-<button class="copy-btn">Copiar</button>
-<pre><code><span class="cmt">// 9. Colecciones</span>
-
-<span class="kwd">class</span> <span class="fnc">Jugador</span> {
+        <section id="colecciones" class="content-section">
+            <h2>Colecciones (Listas)</h2>
+            <p>Las colecciones permiten almacenar y manipular grupos de objetos.</p>
+            <div class="code-container">
+                <button class="copy-btn">Copiar</button>
+<pre><code><span class="kwd">class</span> <span class="fnc">Jugador</span> {
 <span class="fnc">constructor</span>(nombre) {
 <span class="kwd">this</span>.nombre = nombre;
 }
@@ -410,19 +403,37 @@
 <span class="kwd">class</span> <span class="fnc">Equipo</span> {
 <span class="fnc">constructor</span>(nombre) {
 <span class="kwd">this</span>.nombre = nombre;
-<span class="kwd">this</span>.jugadores = [];
+<span class="kwd">this</span>.jugadores = []; <span class="cmt">// colección (array)</span>
 }
 
-<span class="fnc">agregarJugador</span>(j) {
-<span class="kwd">this</span>.jugadores.push(j);
+<span class="fnc">agregarJugador</span>(jugador) {
+<span class="kwd">this</span>.jugadores.<span class="fnc">push</span>(jugador);
 }
 
 <span class="fnc">listarJugadores</span>() {
-<span class="kwd">this</span>.jugadores.forEach(j => <span class="fnc">console</span>.log(j.nombre));
+<span class="fnc">console</span>.log(<span class="str">"Lista de jugadores de "</span> + <span class="kwd">this</span>.nombre);
+<span class="cmt">// recorrer la lista</span>
+<span class="kwd">this</span>.jugadores.<span class="fnc">forEach</span>(jugador => {
+<span class="fnc">console</span>.log(jugador.nombre);
+});
 }
-}</code></pre>
-</div>
-</section>
+}
+
+<span class="cmt">// Crear objetos</span>
+<span class="cmt">// const river = new Equipo("River");</span>
+<span class="cmt">// const boca = new Equipo("Boca");</span>
+<span class="cmt">// const jugador1 = new Jugador("Jugador A");</span>
+<span class="cmt">// const jugador2 = new Jugador("Jugador B");</span>
+
+<span class="cmt">// Agregar jugadores</span>
+<span class="cmt">// river.agregarJugador(jugador1);</span>
+<span class="cmt">// boca.agregarJugador(jugador2);</span>
+
+<span class="cmt">// Mostrar colecciones</span>
+<span class="cmt">// river.listarJugadores();</span>
+<span class="cmt">// boca.listarJugadores();</span></code></pre>
+            </div>
+        </section>
 
         <div class="note-footer">
             <p>unipe TALLER | Diseño y construcción de recursos didácticos interactivos</p>
