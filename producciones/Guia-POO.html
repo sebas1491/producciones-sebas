@@ -342,6 +342,87 @@
 <span class="cmt">// const perro = new Perro();</span></code></pre>
 </div>
 </section>
+        <!-- POLIMORFISMO -->
+<section class="content-section">
+<h2>Polimorfismo</h2>
+
+<div class="code-container">
+<button class="copy-btn">Copiar</button>
+<pre><code><span class="cmt">// 7. Polimorfismo</span>
+
+<span class="kwd">class</span> <span class="fnc">Gato</span> <span class="kwd">extends</span> <span class="fnc">Animal</span> {
+<span class="fnc">hacerSonido</span>() {
+<span class="fnc">console</span>.log(<span class="str">"Miau"</span>);
+}
+}
+
+<span class="kwd">class</span> <span class="fnc">Vaca</span> <span class="kwd">extends</span> <span class="fnc">Animal</span> {
+<span class="fnc">hacerSonido</span>() {
+<span class="fnc">console</span>.log(<span class="str">"Muuu"</span>);
+}
+}
+
+<span class="cmt">// [new Gato(), new Vaca()].forEach(a => a.hacerSonido());</span></code></pre>
+</div>
+</section>
+
+<!-- DELEGACIÓN -->
+<section class="content-section">
+<h2>Delegación</h2>
+
+<div class="code-container">
+<button class="copy-btn">Copiar</button>
+<pre><code><span class="cmt">// 8. Delegación</span>
+
+<span class="kwd">class</span> <span class="fnc">Impresora</span> {
+<span class="fnc">imprimir</span>(texto) {
+<span class="fnc">console</span>.log(<span class="str">"Imprimiendo: "</span> + texto);
+}
+}
+
+<span class="kwd">class</span> <span class="fnc">Documento</span> {
+<span class="fnc">constructor</span>(contenido, impresora) {
+<span class="kwd">this</span>.contenido = contenido;
+<span class="kwd">this</span>.impresora = impresora;
+}
+
+<span class="fnc">imprimirDocumento</span>() {
+<span class="kwd">this</span>.impresora.<span class="fnc">imprimir</span>(<span class="kwd">this</span>.contenido);
+}
+}</code></pre>
+</div>
+</section>
+
+<!-- COLECCIONES -->
+<section class="content-section">
+<h2>Colecciones</h2>
+
+<div class="code-container">
+<button class="copy-btn">Copiar</button>
+<pre><code><span class="cmt">// 9. Colecciones</span>
+
+<span class="kwd">class</span> <span class="fnc">Jugador</span> {
+<span class="fnc">constructor</span>(nombre) {
+<span class="kwd">this</span>.nombre = nombre;
+}
+}
+
+<span class="kwd">class</span> <span class="fnc">Equipo</span> {
+<span class="fnc">constructor</span>(nombre) {
+<span class="kwd">this</span>.nombre = nombre;
+<span class="kwd">this</span>.jugadores = [];
+}
+
+<span class="fnc">agregarJugador</span>(j) {
+<span class="kwd">this</span>.jugadores.push(j);
+}
+
+<span class="fnc">listarJugadores</span>() {
+<span class="kwd">this</span>.jugadores.forEach(j => <span class="fnc">console</span>.log(j.nombre));
+}
+}</code></pre>
+</div>
+</section>
 
         <div class="note-footer">
             <p>unipe TALLER | Diseño y construcción de recursos didácticos interactivos</p>
