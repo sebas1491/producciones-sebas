@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intérprete HTML Pro - Sebas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-body: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-editor: #1e1e1e; 
+            --color-text: #f1f5f9;
+            --primary-color: #6366f1;
+            --border-color: #334155;
+            --radius: 12px;
+            --bg-preview: #0f172a;
+        }
+
+        body.light-mode {
+            --bg-body: #f3f4f6;
+            --bg-panel: #ffffff;
+            --color-text: #1e293b;
+            --border-color: #e5e7eb;
+            --bg-preview: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--bg-panel);
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+        }
+
+        .header-left { display: flex; align-items: center; gap: 15px; }
+        header h1 { font-size: 1.1rem; color: var(--primary-color); }
+
+        .theme-toggle {
+            background: var(--border-color);
+            border: none;
+            color: var(--color-text);
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .workspace { 
+            display: flex; 
+            flex: 1; 
+            padding: 1rem; 
+            overflow: hidden; 
+            position: relative; 
+        }
+
+        #resize-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 100;
+            display: none;
+            cursor: col-resize;
+        }
+
+        .panel { 
+            display: flex; 
+            flex-direction: column; 
+            background: var(--bg-panel); 
+            border-radius: var(--radius); 
+            border: 1px solid var(--border-color); 
+            overflow: hidden; 
+        }
+
+        #panel-editor { width: 45%; min-width: 200px; }
+        #panel-preview { flex: 1; min-width: 200px; display: flex; flex-direction: column; }
+
+        .panel-header { 
+            padding: 0.6rem 1rem; 
+            background: var(--bg-panel); 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-weight: 600; 
+            font-size: 0.9rem; 
+        }
+        
+        .editor-container {
+            position: relative;
+            flex: 1;
+            background: var(--bg-editor);
+            overflow: hidden;
+        }
+
+        #editor, #highlighting {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            padding: 20px;
+            border: none;
+            margin: 0;    
+            display: block;     
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            tab-size: 4;
+            white-space: pre;
+            overflow: auto;
+            box-sizing: border-box; /* Asegúrate de que esté */
+            font-variant-ligatures: none; /* Evita que el ancho de letra varíe */
+        }
+
+
+        #editor {
+            color: transparent;
+            background: transparent;
+            caret-color: white; 
+            z-index: 2;
+            resize: none;
+            outline: none;
+        }
+
+        #highlighting { z-index: 1; pointer-events: none; }
+        code[class*="language-"] { background: none !important; text-shadow: none !important; }
+
+        .resizer { 
+            width: 16px; 
+            cursor: col-resize; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 10;
+        }
+        .resizer::after { content: ""; width: 2px; height: 30px; background: var(--border-color); border-radius: 2px; }
+
+        .btn { border: none; padding: 0.5rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+        .btn-primary { background-color: var(--primary-color); color: white; }
+        .btn-secondary { background-color: var(--border-color); color: var(--color-text); }
+
+        .view-controls { display: flex; gap: 4px; background: var(--bg-body); padding: 3px; border-radius: 8px; }
+        .btn-view { background: transparent; border: none; color: var(--color-text); padding: 4px 8px; border-radius: 5px; cursor: pointer; font-size: 0.7rem; }
+        .btn-view.active { background: var(--primary-color); color: white; }
+
+        /* CONTENEDOR DE VISTA PREVIA - AQUÍ ESTÁ EL TRUCO */
+        .preview-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            background: var(--bg-preview); 
+            overflow: hidden; 
+            position: relative;
+            padding: 10px; /* Margen mínimo */
+        }
+
+        /* FRAME DINÁMICO CON ESCALADO AJUSTADO */
+        #salida { 
+            background-color: white; 
+            border: none;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: center center;
+            flex-shrink: 0;
+        }
+
+        /* MODO MONITOR - Ajustado al límite vertical */
+        #salida.pc {
+            width: 700px;
+            height: 420px;
+            border: 14px solid #334155;
+            border-bottom: 12px solid #334155; 
+            border-radius: 12px;
+            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.7);
+            /* Ajuste de escala para que choque con los bordes sin salir de margen */
+            transform: scale(calc(min(100vw, 100vh) / 1000 * 1.3)); 
+        }
+
+        /* MODO CELULAR - Ajustado al límite vertical */
+        #salida.mobile { 
+            width: 227px; 
+            height: 454px; 
+            border: 12px solid #334155;
+            border-radius: 36px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); 
+            /* Escala optimizada para que el teléfono ocupe casi todo el alto */
+            transform: scale(calc(min(100vw, 100vh) / 850));
+        }
+
+        /* Soporte del monitor */
+        .monitor-elements {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        body:has(#salida.pc) .monitor-stand, 
+        body:has(#salida.pc) .monitor-base { display: block; }
+
+        #fileInput { display: none; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="resize-overlay"></div>
+
+    <header>
+        <div class="header-left">
+            <button class="theme-toggle" id="themeToggle">🌓</button>
+            <h1>Mi Pagina Web</h1>
+        </div>
+    </header>
+
+    <div class="workspace" id="container">
+        <div class="panel" id="panel-editor">
+            <div class="panel-header">
+                <span>Editor HTML</span>
+                <div style="display:flex; gap:8px;">
+                    <input type="file" id="fileInput" accept=".html">
+                    <button class="btn btn-secondary" id="btnAbrir">Abrir</button>
+                    <button class="btn btn-primary" id="btnGuardar">Guardar</button>
+                </div>
+            </div>
+            <div class="editor-container">
+                <textarea id="editor" spellcheck="false"></textarea>
+                <pre id="highlighting" aria-hidden="true"><code class="language-html" id="highlighting-content"></code></pre>
+            </div>
+        </div>
+
+        <div class="resizer" id="dragMe"></div>
+
+        <div class="panel" id="panel-preview">
+            <div class="panel-header">
+                <span>Vista Previa</span>
+                <div class="view-controls">
+                    <button class="btn-view active" id="viewPC">Monitor</button>
+                    <button class="btn-view" id="viewMobile">Celular</button>
+                </div>
+            </div>
+            <div class="preview-container">
+                <iframe id="salida" class="pc" title="Vista previa"></iframe>
+                <div class="monitor-elements">
+                    <div class="monitor-stand"></div>
+                    <div class="monitor-base"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-html.min.js"></script>
+
+    <script>
+        const editor = document.getElementById('editor');
+        const highlightContent = document.getElementById('highlighting-content');
+        const highlightPre = document.getElementById('highlighting');
+        const salida = document.getElementById('salida');
+        const overlay = document.getElementById('resize-overlay');
+
+        editor.addEventListener('scroll', () => {
+            highlightPre.scrollTop = editor.scrollTop;
+            highlightPre.scrollLeft = editor.scrollLeft;
+        });
+
+        function update() {
+            let code = editor.value;
+            salida.srcdoc = code;
+            if (code[code.length-1] == "\n") code += " ";
+            highlightContent.textContent = code;
+            Prism.highlightElement(highlightContent);
+        }
+
+        editor.addEventListener('input', update);
+
+        editor.value = `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 90vh;
+      background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+      margin: 0;
+      color: #333;
+    }
+    .tarjeta {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="tarjeta">
+    <h1>¡Hola Mundo! 🌍</h1>
+  </div>
+</body>
+</html>`;
+        update();
+
+        // RESIZER
+        let isResizing = false;
+        const resizer = document.getElementById('dragMe');
+        const leftPanel = document.getElementById('panel-editor');
+
+        resizer.addEventListener('mousedown', () => {
+            isResizing = true;
+            overlay.style.display = 'block';
+            document.body.style.cursor = 'col-resize';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            const containerRect = document.getElementById('container').getBoundingClientRect();
+            let newWidth = e.clientX - containerRect.left;
+            if (newWidth > 200 && newWidth < containerRect.width - 200) {
+                leftPanel.style.width = newWidth + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isResizing = false;
+            overlay.style.display = 'none';
+            document.body.style.cursor = 'default';
+        });
+
+        // BOTONES
+        document.getElementById('viewPC').onclick = () => {
+            salida.className = 'pc';
+            document.getElementById('viewPC').classList.add('active');
+            document.getElementById('viewMobile').classList.remove('active');
+        };
+        
+        document.getElementById('viewMobile').onclick = () => {
+            salida.className = 'mobile';
+            document.getElementById('viewMobile').classList.add('active');
+            document.getElementById('viewPC').classList.remove('active');
+        };
+
+        document.getElementById('themeToggle').onclick = () => document.body.classList.toggle('light-mode');
+        document.getElementById('btnGuardar').onclick = () => {
+            const blob = new Blob([editor.value], {type:'text/html'});
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'web_final.html';
+            a.click();
+        };
+        document.getElementById('btnAbrir').onclick = () => document.getElementById('fileInput').click();
+        document.getElementById('fileInput').onchange = (e) => {
+            const reader = new FileReader();
+            reader.onload = (ev) => { editor.value = ev.target.result; update(); };
+            reader.readAsText(e.target.files[0]);
+        };
+    </script>
+</body>
+</html>
